@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2016/04/29 15:58:23.000.298,=E:\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2016/04/29 16:14:06.000.254,E:\Documentos\Embarcadero\Studio\Projects\Unit1.fmx=E:\Documentos\OneDrive\Univel\Trabalho Pejeto Experimental\projeto\ULogin.fmx</Transaction>
+    <Transaction>2016/04/29 16:14:06.000.254,E:\Documentos\Embarcadero\Studio\Projects\Unit1.pas=E:\Documentos\OneDrive\Univel\Trabalho Pejeto Experimental\projeto\ULogin.pas</Transaction>
+    <Transaction>2016/04/29 16:14:52.000.072,E:\Documentos\Embarcadero\Studio\Projects\Project1.dproj=E:\Documentos\OneDrive\Univel\Trabalho Pejeto Experimental\projeto\FutSystem.dproj</Transaction>
+    <Transaction>2016/04/29 16:56:31.000.210,=C:\Trabalho Projeto Experimental\Projeto\ModelSupport_FutSystem\default.txaPackage</Transaction>
+    <Transaction>2016/04/29 16:56:33.000.608,=C:\Trabalho Projeto Experimental\Projeto\ModelSupport_FutSystem\default.txvpck</Transaction>
+    <Transaction>2016/04/29 16:56:34.000.758,=C:\Trabalho Projeto Experimental\Projeto\ModelSupport_FutSystem\FutSystem\default.txvpck</Transaction>
+    <Transaction>2016/05/03 20:48:18.000.791,=C:\Trabalho Projeto Experimental\Projeto\Unit2.pas</Transaction>
+    <Transaction>2016/05/03 21:23:51.000.481,C:\Trabalho Projeto Experimental\Projeto\Unit2.pas=C:\Trabalho Projeto Experimental\Projeto\UPrincipal.pas</Transaction>
+    <Transaction>2016/05/03 21:23:51.000.481,C:\Trabalho Projeto Experimental\Projeto\Unit2.fmx=C:\Trabalho Projeto Experimental\Projeto\UPrincipal.fmx</Transaction>
+    <Transaction>2016/06/02 21:23:21.000.171,=C:\Users\LucasM\OneDrive\Univel - TADS\3º Semestre\Projeto Experimental I\1º Bimestre\Trabalho Projeto Experimental\Mobile\UFuncoes.pas</Transaction>
+    <Transaction>2016/06/03 00:29:14.000.072,=C:\Users\LucasM\OneDrive\Univel - TADS\3º Semestre\Projeto Experimental I\1º Bimestre\Trabalho Projeto Experimental\Mobile\IWSFutSystem1.pas</Transaction>
+  </Transactions>
+	<MobileDevice>05157df59c123d13-Android</MobileDevice>
+</BorlandProject>

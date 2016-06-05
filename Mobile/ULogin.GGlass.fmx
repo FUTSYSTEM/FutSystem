@@ -1,0 +1,25 @@
+inherited Form1_GGlass: TForm1_GGlass
+  ClientHeight = 215
+  ClientWidth = 427
+  DesignerMasterStyle = 3
+  inherited Layout1: TLayout
+    Size.Width = 427.000000000000000000
+    Size.Height = 165.000000000000000000
+    inherited Layout2: TLayout
+      Position.Y = 78.000000000000000000
+      Size.Width = 427.000000000000000000
+      inherited Button2: TButton
+        Size.Width = 427.000000000000000000
+      end
+      inherited Button1: TButton
+        Size.Width = 427.000000000000000000
+      end
+    end
+  end
+  inherited Layout3: TLayout
+    Size.Width = 427.000000000000000000
+    inherited Label1: TLabel
+      Size.Width = 427.000000000000000000
+    end
+  end
+end
