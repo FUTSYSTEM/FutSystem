@@ -29,6 +29,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure SwTipoUsuarioClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure btnCriarContaClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -42,7 +43,7 @@ implementation
 
 {$R *.fmx}
 
-uses UPrincipal, UFuncoes, IWSFutSystem1;
+uses UPrincipal, UFuncoes, IWSFutSystem1, UDMWebService, UCadAtleta, UCadCampo;
 {$R *.SmXhdpiPh.fmx ANDROID}
 {$R *.LgXhdpiPh.fmx ANDROID}
 {$R *.GGlass.fmx ANDROID}
@@ -54,24 +55,53 @@ begin
   Close;
 end;
 
-procedure TFrmLogin.btnEntrarClick(Sender: TObject);
+procedure TFrmLogin.btnCriarContaClick(Sender: TObject);
 begin
-  if  then
+//  cadastro de campo
+  if SwTipoUsuario.IsChecked then
+  begin
+    if  not Assigned(FrmCadCampo) then
+      FrmCadCampo := TFrmCadCampo.Create(Self);
+    FrmCadCampo.Show;
+  end
+  else  //cadastro de atleta
+  begin
+    if  not Assigned(FrmCadAtleta) then
+      FrmCadAtleta := TFrmCadAtleta.Create(Self);
+    FrmCadAtleta.Show;
+  end;
+end;
 
-  if  not Assigned(FrmPrincipal) then
-    FrmPrincipal := TFrmPrincipal.Create(Self);
-  if EdSenha.Text = '132513' then
-    FrmPrincipal.Show
+procedure TFrmLogin.btnEntrarClick(Sender: TObject);
+var
+  TipoLogin :TTipoLogin;
+begin
+  //define o tipo de usuário
+  if SwTipoUsuario.IsChecked then
+    TipoLogin := TTipoLogin.tlCampo
+  else
+    TipoLogin := TTipoLogin.tlAtleta;
+
+  if DMWebService.ValidaLogin(EdUsuario.Text, EdSenha.Text, TipoLogin) then
+  begin
+    if  not Assigned(FrmPrincipal) then
+      FrmPrincipal := TFrmPrincipal.Create(Self);
+    FrmPrincipal.Show;
+  end
   else
   begin
-    MsgAviso('Senha inválida.');
+    MsgAviso('Usuário/senha não encontrados.');
     EdSenha.SetFocus;
-  end
+  end;
 end;
 
 procedure TFrmLogin.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  FrmLogin := nil;
+  try
+    FrmLogin := nil;
+  except
+
+  end;
 end;
 
 procedure TFrmLogin.FormShow(Sender: TObject);

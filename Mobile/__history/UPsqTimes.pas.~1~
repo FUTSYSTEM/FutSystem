@@ -1,0 +1,26 @@
+unit UPsqTimes;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
+  FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
+  UPsqPadrao, FMX.ListView.Types, MultiDetailAppearanceU, FMX.ListView,
+  FMX.Controls.Presentation, FMX.Layouts;
+
+type
+  TFrmPsqTimes = class(TFrmPsqPadrao)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmPsqTimes: TFrmPsqTimes;
+
+implementation
+
+{$R *.fmx}
+
+end.

@@ -1,0 +1,11 @@
+inherited FrmPsqTimes: TFrmPsqTimes
+  OnClose = FormClose
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    inherited tlbTitulo: TToolBar
+      inherited lblTitulo: TLabel
+        Text = 'Pesquisa de Times'
+      end
+    end
+  end
+end

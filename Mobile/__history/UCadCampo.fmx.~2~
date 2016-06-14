@@ -1,0 +1,12 @@
+inherited FrmCadCampo: TFrmCadCampo
+  Caption = 'FrmPadrao1'
+  OnClose = FormClose
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    inherited tlbTitulo: TToolBar
+      inherited lblTitulo: TLabel
+        Text = 'Cadastro de Campos/Quadras'
+      end
+    end
+  end
+end

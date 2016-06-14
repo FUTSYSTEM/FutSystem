@@ -1,0 +1,10 @@
+object FrmPadrao: TFrmPadrao
+  Left = 0
+  Top = 0
+  ClientHeight = 480
+  ClientWidth = 394
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 3
+end

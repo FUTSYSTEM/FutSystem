@@ -2,12 +2,13 @@ unit UFuncoes;
 
 interface
 
-uses FMX.Dialogs, System.UITypes;
+uses FMX.Dialogs, System.UITypes, IWSFutSystem1;
+
 
     type TUsuario = record
-        Codigo : Integer;
+        Codigo     : Integer;
         NomeAcesso : string;
-
+        TipoLogin  : TTipoLogin;
         procedure LimparDados;
     end;
 
@@ -16,6 +17,9 @@ uses FMX.Dialogs, System.UITypes;
     procedure MsgAviso(Msg: string);
     procedure MsgErro(Msg: string);
     procedure MsgInforma(Msg: string);
+
+    procedure InterpretaMsgErro(Msg: string);
+
 
 implementation
 
@@ -63,8 +67,18 @@ end;
 
 procedure TUsuario.LimparDados;
 begin
- Codigo      := 0;
+  Codigo     := 0;
   NomeAcesso := '';
+  TipoLogin  := TTipoLogin.tlAtleta;
+end;
+
+procedure InterpretaMsgErro(Msg: string);
+begin
+  //caso seja um erro não encontrado, joga mensagem padrão
+  Msg := 'Falha na comunicação com o servidor não identificada: '
+          + #10 +#13 + Msg + #10 +#13 + 'Tente novamente mais tarde.';
+
+  MsgErro(Msg);
 end;
 
 end.

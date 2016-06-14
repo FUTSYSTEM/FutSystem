@@ -1,0 +1,11 @@
+inherited FrmCadAtleta: TFrmCadAtleta
+  OnClose = FormClose
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    inherited tlbTitulo: TToolBar
+      inherited lblTitulo: TLabel
+        Text = 'Cadastro de Atleta'
+      end
+    end
+  end
+end

@@ -257,6 +257,8 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -278,7 +280,60 @@
             <FormType>fmx</FormType>
         </DCCReference>
         <DCCReference Include="UFuncoes.pas"/>
+        <DCCReference Include="UDMWebService.pas">
+            <Form>DMWebService</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <DCCReference Include="IWSFutSystem1.pas"/>
+        <DCCReference Include="UPadrao.pas">
+            <Form>FrmPadrao</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="UCadTime.pas">
+            <Form>FrmCadTime</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="UCadPartida.pas">
+            <Form>FrmCadPartida</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="UCadAtleta.pas">
+            <Form>FrmCadAtleta</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="UCadCampo.pas">
+            <Form>FrmCadCampo</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="UPsqPadrao.pas">
+            <Form>FrmPsqPadrao</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="UPsqAtletas.pas">
+            <Form>FrmPsqAtletas</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="UPsqTimes.pas">
+            <Form>FrmPsqTimes</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="UPsqCampos.pas">
+            <Form>FrmPsqCampos</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="UPsqPartidas.pas">
+            <Form>FrmPsqPartidas</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="UPsqMeusTimes.pas">
+            <Form>FrmPsqMeusTimes</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="UPsqAtletasTimes.pas">
+            <Form>FrmPsqAtletasTimes</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
         <None Include="ModelSupport_FutSystem\default.txaPackage"/>
         <None Include="ModelSupport_FutSystem\default.txvpck"/>
         <None Include="ModelSupport_FutSystem\FutSystem\default.txvpck"/>
@@ -302,6 +357,11 @@
                 <Source>
                     <Source Name="MainSource">FutSystem.dpr</Source>
                 </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclDataSnapNativeServer220.bpl">Embarcadero DBExpress DataSnap Native Server Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k220.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp220.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="1">
                 <DeployFile LocalName="$(BDS)\Redist\iossim32\libcgunwind.1.0.dylib" Class="DependencyModule">
@@ -848,13 +908,13 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
-                <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
-                <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
             </Deployment>
             <Platforms>
                 <Platform value="Android">True</Platform>

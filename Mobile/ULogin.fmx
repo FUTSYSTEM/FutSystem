@@ -17277,6 +17277,7 @@ object FrmLogin: TFrmLogin
       Anchors = [akLeft, akTop, akRight]
       StyleLookup = 'clearingeditstyle'
       TabOrder = 0
+      Text = 'lucas_medeiros09@hotmail.com'
       Position.X = 80.000000000000000000
       Position.Y = 120.000000000000000000
       Size.Width = 266.000000000000000000
@@ -17301,6 +17302,7 @@ object FrmLogin: TFrmLogin
       StyleLookup = 'clearingeditstyle'
       TabOrder = 1
       Password = True
+      Text = '123'
       Position.X = 80.000000000000000000
       Position.Y = 184.000000000000000000
       Size.Width = 266.000000000000000000
@@ -17349,7 +17351,9 @@ object FrmLogin: TFrmLogin
         TabOrder = 3
         Text = 'Criar conta'
         TextSettings.Font.Style = [fsBold]
-        OnClick = btnEntrarClick
+        TextSettings.FontColor = claRed
+        TintColor = claBlack
+        OnClick = btnCriarContaClick
       end
     end
     object SwTipoUsuario: TSwitch

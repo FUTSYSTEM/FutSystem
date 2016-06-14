@@ -1,0 +1,10 @@
+inherited FrmPsqCampos: TFrmPsqCampos
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    inherited tlbTitulo: TToolBar
+      inherited lblTitulo: TLabel
+        Text = 'Pesquisa de Campos'
+      end
+    end
+  end
+end

@@ -1,0 +1,10 @@
+inherited FrmCadUsuario: TFrmCadUsuario
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    inherited tlbTitulo: TToolBar
+      inherited Label1: TLabel
+        Text = 'Cadastro de Usu'#225'rio'
+      end
+    end
+  end
+end

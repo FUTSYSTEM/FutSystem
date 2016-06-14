@@ -26,10 +26,17 @@ type
     lstConfig: TListBoxGroupHeader;
     lstMeusTimes: TListBoxItem;
     lstPartidas: TListBoxItem;
+    tlbTitulo: TToolBar;
     procedure FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
     procedure sbSairClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure lstPerfilClick(Sender: TObject);
+    procedure lstAtletasClick(Sender: TObject);
+    procedure lstCamposClick(Sender: TObject);
+    procedure lstTimesClick(Sender: TObject);
+    procedure lstPartidasClick(Sender: TObject);
+    procedure lstMeusTimesClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -46,7 +53,8 @@ implementation
 
 {$R *.fmx}
 
-uses ULogin;
+uses ULogin, UCadAtleta, UCadCampo, UDMWebService, IWSFutSystem1, UPsqAtletas,
+  UPsqCampos, UPsqTimes, UPsqPartidas, UPsqMeusTimes;
 
 { TFrmPrincipal }
 
@@ -106,10 +114,63 @@ begin
 
 end;
 
+//retira fundo preto
 procedure TFrmPrincipal.HideBackground;
 begin
   recBackground.AnimateFloat('opacity', 0, 0.1);
   recBackground.Visible := False;
+end;
+
+procedure TFrmPrincipal.lstAtletasClick(Sender: TObject);
+begin
+  if not Assigned(FrmPsqAtletas) then
+    FrmPsqAtletas := TFrmPsqAtletas.Create(Self);
+  FrmPsqAtletas.Show;
+end;
+
+procedure TFrmPrincipal.lstCamposClick(Sender: TObject);
+begin
+  if not Assigned(FrmPsqCampos) then
+    FrmPsqCampos := TFrmPsqCampos.Create(Self);
+  FrmPsqCampos.Show;
+end;
+
+procedure TFrmPrincipal.lstMeusTimesClick(Sender: TObject);
+begin
+  if not Assigned(FrmPsqMeusTimes) then
+    FrmPsqMeusTimes := TFrmPsqMeusTimes.Create(Self);
+  FrmPsqMeusTimes.Show;
+end;
+
+procedure TFrmPrincipal.lstPartidasClick(Sender: TObject);
+begin
+  if not Assigned(FrmPsqPartidas) then
+    FrmPsqPartidas := TFrmPsqPartidas.Create(Self);
+  FrmPsqPartidas.Show;
+end;
+
+procedure TFrmPrincipal.lstPerfilClick(Sender: TObject);
+begin
+//  cadastro de campo
+  if Usuario.TipoLogin = TTipoLogin.tlCampo then
+  begin
+    if  not Assigned(FrmCadCampo) then
+      FrmCadCampo := TFrmCadCampo.Create(Self);
+    FrmCadCampo.Show;
+  end
+  else  //cadastro de atleta
+  begin
+    if  not Assigned(FrmCadAtleta) then
+      FrmCadAtleta := TFrmCadAtleta.Create(Self);
+    FrmCadAtleta.Show;
+  end;
+end;
+
+procedure TFrmPrincipal.lstTimesClick(Sender: TObject);
+begin
+  if not Assigned(FrmPsqTimes) then
+    FrmPsqTimes := TFrmPsqTimes.Create(Self);
+  FrmPsqTimes.Show;
 end;
 
 procedure TFrmPrincipal.sbSairClick(Sender: TObject);
@@ -117,6 +178,7 @@ begin
   Close;
 end;
 
+//seta fundo preto na tela e abre o menu
 procedure TFrmPrincipal.ShowBackground(AParent: TFmxObject;
   AOnClick: TNotifyEvent);
 begin

@@ -27,7 +27,7 @@ object FrmPrincipal: TFrmPrincipal
       Size.PlatformDefault = False
       Visible = False
     end
-    object TToolBar
+    object tlbTitulo: TToolBar
       Size.Width = 402.000000000000000000
       Size.Height = 48.000000000000000000
       Size.PlatformDefault = False
@@ -49,21 +49,21 @@ object FrmPrincipal: TFrmPrincipal
         Size.Height = 48.000000000000000000
         Size.PlatformDefault = False
         StyleLookup = 'detailstoolbutton'
+        Visible = False
       end
     end
     object MultiView1: TMultiView
       TargetControl = lytMain
       MasterButton = sbMenu
-      Mode = Drawer
+      Mode = Panel
       Size.Width = 250.000000000000000000
-      Size.Height = 576.000000000000000000
+      Size.Height = 528.000000000000000000
       Size.PlatformDefault = False
-      Visible = False
       TabOrder = 0
       object lstMnuMain: TListBox
         Align = Client
         Size.Width = 249.000000000000000000
-        Size.Height = 576.000000000000000000
+        Size.Height = 528.000000000000000000
         Size.PlatformDefault = False
         StyleLookup = 'transparentlistboxstyle'
         TabOrder = 0
@@ -73,7 +73,7 @@ object FrmPrincipal: TFrmPrincipal
         DefaultItemStyles.GroupFooterStyle = ''
         GroupingKind = Grouped
         Viewport.Width = 249.000000000000000000
-        Viewport.Height = 576.000000000000000000
+        Viewport.Height = 528.000000000000000000
         object lstPesquisas: TListBoxGroupHeader
           Size.Width = 249.000000000000000000
           Size.Height = 56.000000000000000000
@@ -89,6 +89,7 @@ object FrmPrincipal: TFrmPrincipal
           Size.PlatformDefault = False
           TabOrder = 1
           Text = 'Atletas'
+          OnClick = lstAtletasClick
         end
         object lstCampos: TListBoxItem
           ItemData.Accessory = aMore
@@ -98,6 +99,7 @@ object FrmPrincipal: TFrmPrincipal
           Size.PlatformDefault = False
           TabOrder = 2
           Text = 'Campos'
+          OnClick = lstCamposClick
         end
         object lstTimes: TListBoxItem
           ItemData.Accessory = aMore
@@ -107,6 +109,7 @@ object FrmPrincipal: TFrmPrincipal
           Size.PlatformDefault = False
           TabOrder = 3
           Text = 'Times'
+          OnClick = lstTimesClick
         end
         object lstPartidas: TListBoxItem
           ItemData.Accessory = aMore
@@ -116,6 +119,7 @@ object FrmPrincipal: TFrmPrincipal
           Size.PlatformDefault = False
           TabOrder = 8
           Text = 'Minhas Partidas'
+          OnClick = lstPartidasClick
         end
         object lstConfig: TListBoxGroupHeader
           Position.Y = 232.000000000000000000
@@ -133,6 +137,7 @@ object FrmPrincipal: TFrmPrincipal
           Size.PlatformDefault = False
           TabOrder = 5
           Text = 'Editar Perfil'
+          OnClick = lstPerfilClick
         end
         object lstMeusTimes: TListBoxItem
           ItemData.Accessory = aMore
@@ -142,6 +147,7 @@ object FrmPrincipal: TFrmPrincipal
           Size.PlatformDefault = False
           TabOrder = 7
           Text = 'Meus Times'
+          OnClick = lstMeusTimesClick
         end
         object ListBoxItem1: TListBoxItem
           Position.Y = 376.000000000000000000

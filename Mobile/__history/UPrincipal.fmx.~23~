@@ -1,0 +1,168 @@
+object FrmPrincipal: TFrmPrincipal
+  Left = 0
+  Top = 0
+  Caption = 'Principal'
+  ClientHeight = 576
+  ClientWidth = 402
+  Position = MainFormCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnClose = FormClose
+  OnKeyUp = FormKeyUp
+  DesignerMasterStyle = 3
+  object lytMain: TLayout
+    Align = Client
+    Size.Width = 402.000000000000000000
+    Size.Height = 576.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object recBackground: TRectangle
+      Fill.Color = claBlack
+      Opacity = 0.500000000000000000
+      Position.X = 296.000000000000000000
+      Position.Y = 56.000000000000000000
+      Size.Width = 50.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      Visible = False
+    end
+    object TToolBar
+      Size.Width = 402.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      object lblTituloT: TLabel
+        Align = Contents
+        Size.Width = 402.000000000000000000
+        Size.Height = 48.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = 'listboxheaderlabel'
+        TextSettings.HorzAlign = Center
+        Text = 'Fut System'
+      end
+      object sbMenu: TSpeedButton
+        Align = Left
+        Margins.Left = 8.000000000000000000
+        Position.X = 8.000000000000000000
+        Size.Width = 48.000000000000000000
+        Size.Height = 48.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = 'detailstoolbutton'
+      end
+    end
+    object MultiView1: TMultiView
+      TargetControl = lytMain
+      MasterButton = sbMenu
+      Mode = Drawer
+      Size.Width = 250.000000000000000000
+      Size.Height = 576.000000000000000000
+      Size.PlatformDefault = False
+      Visible = False
+      TabOrder = 0
+      object lstMnuMain: TListBox
+        Align = Client
+        Size.Width = 249.000000000000000000
+        Size.Height = 576.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = 'transparentlistboxstyle'
+        TabOrder = 0
+        DisableFocusEffect = True
+        DefaultItemStyles.ItemStyle = 'listboxitemnodetail'
+        DefaultItemStyles.GroupHeaderStyle = ''
+        DefaultItemStyles.GroupFooterStyle = ''
+        GroupingKind = Grouped
+        Viewport.Width = 249.000000000000000000
+        Viewport.Height = 576.000000000000000000
+        object lstPesquisas: TListBoxGroupHeader
+          Size.Width = 249.000000000000000000
+          Size.Height = 56.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'PESQUISAS'
+        end
+        object lstAtletas: TListBoxItem
+          ItemData.Accessory = aMore
+          Position.Y = 56.000000000000000000
+          Size.Width = 249.000000000000000000
+          Size.Height = 44.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 1
+          Text = 'Atletas'
+        end
+        object lstCampos: TListBoxItem
+          ItemData.Accessory = aMore
+          Position.Y = 100.000000000000000000
+          Size.Width = 249.000000000000000000
+          Size.Height = 44.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 2
+          Text = 'Campos'
+        end
+        object lstTimes: TListBoxItem
+          ItemData.Accessory = aMore
+          Position.Y = 144.000000000000000000
+          Size.Width = 249.000000000000000000
+          Size.Height = 44.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 3
+          Text = 'Times'
+        end
+        object lstPartidas: TListBoxItem
+          ItemData.Accessory = aMore
+          Position.Y = 188.000000000000000000
+          Size.Width = 249.000000000000000000
+          Size.Height = 44.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 8
+          Text = 'Minhas Partidas'
+        end
+        object lstConfig: TListBoxGroupHeader
+          Position.Y = 232.000000000000000000
+          Size.Width = 249.000000000000000000
+          Size.Height = 56.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 6
+          Text = 'CONFIGURA'#199#213'ES'
+        end
+        object lstPerfil: TListBoxItem
+          ItemData.Accessory = aMore
+          Position.Y = 288.000000000000000000
+          Size.Width = 249.000000000000000000
+          Size.Height = 44.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 5
+          Text = 'Editar Perfil'
+        end
+        object lstMeusTimes: TListBoxItem
+          ItemData.Accessory = aMore
+          Position.Y = 332.000000000000000000
+          Size.Width = 249.000000000000000000
+          Size.Height = 44.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 7
+          Text = 'Meus Times'
+        end
+        object ListBoxItem1: TListBoxItem
+          Position.Y = 376.000000000000000000
+          Size.Width = 249.000000000000000000
+          Size.Height = 45.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 4
+          object sbSair: TSpeedButton
+            Align = Center
+            Margins.Left = 4.000000000000000000
+            Margins.Top = 4.000000000000000000
+            Margins.Right = 4.000000000000000000
+            Margins.Bottom = 4.000000000000000000
+            Size.Width = 241.000000000000000000
+            Size.Height = 48.000000000000000000
+            Size.PlatformDefault = False
+            Text = 'Sair'
+            OnClick = sbSairClick
+          end
+        end
+      end
+    end
+  end
+end

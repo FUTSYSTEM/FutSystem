@@ -1,0 +1,42 @@
+object FrmPadrao: TFrmPadrao
+  Left = 0
+  Top = 0
+  ClientHeight = 576
+  ClientWidth = 402
+  Position = ScreenCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 3
+  object lytMain: TLayout
+    Align = Client
+    Size.Width = 402.000000000000000000
+    Size.Height = 576.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object tlbTitulo: TToolBar
+      Size.Width = 402.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object lblTitulo: TLabel
+        Align = Client
+        Size.Width = 402.000000000000000000
+        Size.Height = 48.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = 'listboxheaderlabel'
+        TextSettings.HorzAlign = Center
+        Text = 'T'#237'tulo'
+        object sbVoltar: TSpeedButton
+          Align = Left
+          Size.Width = 48.000000000000000000
+          Size.Height = 48.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = 'arrowlefttoolbutton'
+          Text = 'sbVoltar'
+          OnClick = sbVoltarClick
+        end
+      end
+    end
+  end
+end
