@@ -5,6 +5,12 @@ inherited FrmPsqCampos: TFrmPsqCampos
     inherited tlbTitulo: TToolBar
       inherited lblTitulo: TLabel
         Text = 'Pesquisa de Campos'
+        inherited sbAdicionar: TSpeedButton
+          Visible = False
+        end
+        inherited sbAtualizar: TSpeedButton
+          Position.X = 354.000000000000000000
+        end
       end
     end
   end

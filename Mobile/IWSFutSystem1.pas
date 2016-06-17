@@ -303,7 +303,7 @@ type
     function  GetEstados: TListEstados; stdcall;
     function  GetPartidas(const Codigo: Integer): TListPartidas; stdcall;
     function  GetPartidasAtletas(const Par_Codigo: Integer; const Atl_Codigo: Integer): TListPartidasAtletas; stdcall;
-    function  GetTimes(const Codigo: Integer; const Cid_IBGE: Integer): TListTimes; stdcall;
+    function  GetTimes(const Codigo: Integer = 0; const Cid_IBGE: Integer = 0): TListTimes; stdcall;
     function  GetTimesAtletas(const Tim_Codigo: Integer; const Atl_Codigo: Integer): TListTimesAtletas; stdcall;
     function  ValidaLogin(const Email: string; const Senha: string; const TipoLogin: TTipoLogin): Integer; stdcall;
     function  SetAtleta(const Atleta: TAtleta): Boolean; stdcall;

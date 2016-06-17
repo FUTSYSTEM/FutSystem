@@ -1,0 +1,46 @@
+inherited FrmPsqAtletas: TFrmPsqAtletas
+  OnCreate = FormCreate
+  OnClose = FormClose
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    inherited tlbTitulo: TToolBar
+      inherited lblTitulo: TLabel
+        Text = 'Pesquisa de Atletas'
+        inherited sbAdicionar: TSpeedButton
+          Visible = False
+        end
+        inherited sbAtualizar: TSpeedButton
+          Position.X = 354.000000000000000000
+          OnClick = sbAtualizarClick
+        end
+      end
+    end
+  end
+  object BindSourceDB1: TBindSourceDB
+    DataSet = DMWebService.fdmAtletas
+    ScopeMappings = <>
+    Left = 264
+    Top = 200
+  end
+  object BindingsList1: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    Left = 20
+    Top = 5
+    object LinkFillControlToField1: TLinkFillControlToField
+      Category = 'Quick Bindings'
+      Control = lvPesquisa
+      Track = True
+      FillDataSource = BindSourceDB1
+      FillDisplayFieldName = 'Atl_NomeCompleto'
+      AutoFill = True
+      FillExpressions = <
+        item
+          SourceMemberName = 'Atl_Codigo'
+          ControlMemberName = 'Detail1'
+        end>
+      FillHeaderExpressions = <>
+      FillBreakGroups = <>
+    end
+  end
+end

@@ -3,7 +3,7 @@ inherited FrmCadPartida: TFrmCadPartida
   DesignerMasterStyle = 3
   inherited lytMain: TLayout
     inherited tlbTitulo: TToolBar
-      inherited Label1: TLabel
+      inherited lblTitulo: TLabel
         Text = 'Marcar Partida'
       end
     end

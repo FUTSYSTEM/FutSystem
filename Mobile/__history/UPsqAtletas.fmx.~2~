@@ -1,0 +1,11 @@
+inherited FrmPsqAtletas: TFrmPsqAtletas
+  OnClose = FormClose
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    inherited tlbTitulo: TToolBar
+      inherited lblTitulo: TLabel
+        Text = 'Pesquisa de Atletas'
+      end
+    end
+  end
+end

@@ -75,7 +75,7 @@ end;
 procedure InterpretaMsgErro(Msg: string);
 begin
   //caso seja um erro não encontrado, joga mensagem padrão
-  Msg := 'Falha na comunicação com o servidor não identificada: '
+  Msg := 'Falha na comunicação não identificada: '
           + #10 +#13 + Msg + #10 +#13 + 'Tente novamente mais tarde.';
 
   MsgErro(Msg);
