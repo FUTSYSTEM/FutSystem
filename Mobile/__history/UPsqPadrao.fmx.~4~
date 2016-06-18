@@ -1,0 +1,43 @@
+inherited FrmPsqPadrao: TFrmPsqPadrao
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    inherited tlbTitulo: TToolBar
+      inherited lblTitulo: TLabel
+        object sbAdicionar: TSpeedButton [0]
+          Align = Right
+          Margins.Left = 8.000000000000000000
+          Position.X = 354.000000000000000000
+          Size.Width = 48.000000000000000000
+          Size.Height = 48.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = 'addtoolbutton'
+          Text = 'Voltar'
+        end
+        object sbAtualizar: TSpeedButton [1]
+          Align = Right
+          Margins.Left = 8.000000000000000000
+          Position.X = 298.000000000000000000
+          Size.Width = 48.000000000000000000
+          Size.Height = 48.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = 'refreshtoolbutton'
+          Text = 'Voltar'
+        end
+      end
+    end
+    object lvPesquisa: TListView
+      ItemAppearanceClassName = 'TMultiDetailItemAppearance'
+      ItemEditAppearanceClassName = 'TMultiDetailDeleteAppearance'
+      HeaderAppearanceClassName = 'TListHeaderObjects'
+      FooterAppearanceClassName = 'TListHeaderObjects'
+      Align = Client
+      Size.Width = 402.000000000000000000
+      Size.Height = 528.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      ItemAppearanceObjects.ItemObjects.MultiDetail2.Font.Style = [fsBold]
+      ItemAppearanceObjects.ItemObjects.MultiDetail2.TextColor = claRed
+      SearchVisible = True
+    end
+  end
+end

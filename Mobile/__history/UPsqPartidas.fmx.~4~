@@ -1,0 +1,18 @@
+inherited FrmPsqPartidas: TFrmPsqPartidas
+  OnCreate = FormCreate
+  OnClose = FormClose
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    inherited tlbTitulo: TToolBar
+      inherited lblTitulo: TLabel
+        Text = 'Pesquisa de Partidas'
+        inherited sbAdicionar: TSpeedButton
+          OnClick = sbAdicionarClick
+        end
+        inherited sbAtualizar: TSpeedButton
+          OnClick = sbAtualizarClick
+        end
+      end
+    end
+  end
+end

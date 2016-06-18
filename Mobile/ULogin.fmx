@@ -3,7 +3,7 @@ object FrmLogin: TFrmLogin
   Top = 0
   Caption = 'FrmLogin'
   ClientHeight = 480
-  ClientWidth = 430
+  ClientWidth = 372
   Fill.Bitmap.Bitmap.PNG = {
     89504E470D0A1A0A0000000D4948445200000332000004630806000000B44011
     F1000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
@@ -17257,16 +17257,15 @@ object FrmLogin: TFrmLogin
   DesignerMasterStyle = 3
   object Layout1: TLayout
     Align = Client
-    Size.Width = 430.000000000000000000
+    Size.Width = 372.000000000000000000
     Size.Height = 430.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     object Label2: TLabel
-      Anchors = [akLeft, akTop, akRight]
       StyledSettings = [Family, Size, Style]
-      Position.X = 80.000000000000000000
+      Position.X = 40.000000000000000000
       Position.Y = 96.000000000000000000
-      Size.Width = 123.000000000000000000
+      Size.Width = 129.000000000000000000
       Size.Height = 23.000000000000000000
       Size.PlatformDefault = False
       TextSettings.FontColor = claWhite
@@ -17274,23 +17273,21 @@ object FrmLogin: TFrmLogin
     end
     object EdUsuario: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      Anchors = [akLeft, akTop, akRight]
       StyleLookup = 'clearingeditstyle'
       TabOrder = 0
       Text = 'lucas_medeiros09@hotmail.com'
-      Position.X = 80.000000000000000000
+      Position.X = 40.000000000000000000
       Position.Y = 120.000000000000000000
-      Size.Width = 266.000000000000000000
+      Size.Width = 265.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyledSettings = [Family, Size, Style]
     end
     object Label3: TLabel
-      Anchors = [akLeft, akTop, akRight]
       StyledSettings = [Family, Size, Style]
-      Position.X = 80.000000000000000000
+      Position.X = 40.000000000000000000
       Position.Y = 160.000000000000000000
-      Size.Width = 123.000000000000000000
+      Size.Width = 129.000000000000000000
       Size.Height = 23.000000000000000000
       Size.PlatformDefault = False
       TextSettings.FontColor = claWhite
@@ -17298,14 +17295,13 @@ object FrmLogin: TFrmLogin
     end
     object EdSenha: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      Anchors = [akLeft, akTop, akRight]
       StyleLookup = 'clearingeditstyle'
       TabOrder = 1
       Password = True
       Text = '123'
-      Position.X = 80.000000000000000000
+      Position.X = 40.000000000000000000
       Position.Y = 184.000000000000000000
-      Size.Width = 266.000000000000000000
+      Size.Width = 265.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyledSettings = [Family, Size, Style]
@@ -17313,14 +17309,14 @@ object FrmLogin: TFrmLogin
     object Layout2: TLayout
       Align = Bottom
       Position.Y = 312.000000000000000000
-      Size.Width = 430.000000000000000000
+      Size.Width = 372.000000000000000000
       Size.Height = 118.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 3
       object btnEntrar: TButton
         Align = Top
         StyledSettings = [Family, Size]
-        Size.Width = 430.000000000000000000
+        Size.Width = 372.000000000000000000
         Size.Height = 33.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
@@ -17332,7 +17328,7 @@ object FrmLogin: TFrmLogin
         Align = Top
         StyledSettings = [Family, Size]
         Position.Y = 33.000000000000000000
-        Size.Width = 430.000000000000000000
+        Size.Width = 372.000000000000000000
         Size.Height = 33.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 1
@@ -17345,7 +17341,7 @@ object FrmLogin: TFrmLogin
         StyledSettings = [Family, Size]
         Locked = True
         Position.Y = 85.000000000000000000
-        Size.Width = 430.000000000000000000
+        Size.Width = 372.000000000000000000
         Size.Height = 33.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 3
@@ -17358,7 +17354,7 @@ object FrmLogin: TFrmLogin
     end
     object SwTipoUsuario: TSwitch
       IsChecked = False
-      Position.X = 184.000000000000000000
+      Position.X = 144.000000000000000000
       Position.Y = 224.000000000000000000
       Size.Width = 44.000000000000000000
       Size.Height = 26.000000000000000000
@@ -17369,7 +17365,7 @@ object FrmLogin: TFrmLogin
     object LabelAtleta: TLabel
       AutoSize = True
       StyledSettings = [Family, Size]
-      Position.X = 82.000000000000000000
+      Position.X = 42.000000000000000000
       Position.Y = 224.000000000000000000
       Size.Width = 54.000000000000000000
       Size.Height = 22.000000000000000000
@@ -17381,7 +17377,7 @@ object FrmLogin: TFrmLogin
     object LabelCampo: TLabel
       AutoSize = True
       StyledSettings = [Family, Size]
-      Position.X = 282.000000000000000000
+      Position.X = 226.000000000000000000
       Position.Y = 224.000000000000000000
       Size.Width = 63.000000000000000000
       Size.Height = 22.000000000000000000
@@ -17392,8 +17388,8 @@ object FrmLogin: TFrmLogin
     object lbl1: TLabel
       Cursor = crHandPoint
       StyledSettings = [Family]
-      Position.X = 86.000000000000000000
-      Position.Y = 272.000000000000000000
+      Position.X = 38.000000000000000000
+      Position.Y = 264.000000000000000000
       Size.Width = 259.000000000000000000
       Size.Height = 23.000000000000000000
       Size.PlatformDefault = False
@@ -17405,18 +17401,18 @@ object FrmLogin: TFrmLogin
   end
   object Layout3: TLayout
     Align = Top
-    Size.Width = 430.000000000000000000
+    Size.Width = 372.000000000000000000
     Size.Height = 50.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
     object Label1: TLabel
       Align = Top
       StyledSettings = []
-      Size.Width = 430.000000000000000000
+      Size.Width = 372.000000000000000000
       Size.Height = 38.000000000000000000
       Size.PlatformDefault = False
       TextSettings.Font.Family = 'Adobe Gothic Std B'
-      TextSettings.Font.Size = 20.000000000000000000
+      TextSettings.Font.Size = 24.000000000000000000
       TextSettings.Font.Style = [fsBold]
       TextSettings.FontColor = claWhite
       TextSettings.HorzAlign = Center

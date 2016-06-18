@@ -49,21 +49,21 @@ object FrmPrincipal: TFrmPrincipal
         Size.Height = 48.000000000000000000
         Size.PlatformDefault = False
         StyleLookup = 'detailstoolbutton'
-        Visible = False
       end
     end
     object MultiView1: TMultiView
       TargetControl = lytMain
       MasterButton = sbMenu
-      Mode = Panel
+      Mode = Drawer
       Size.Width = 250.000000000000000000
-      Size.Height = 528.000000000000000000
+      Size.Height = 576.000000000000000000
       Size.PlatformDefault = False
+      Visible = False
       TabOrder = 0
       object lstMnuMain: TListBox
         Align = Client
         Size.Width = 249.000000000000000000
-        Size.Height = 528.000000000000000000
+        Size.Height = 576.000000000000000000
         Size.PlatformDefault = False
         StyleLookup = 'transparentlistboxstyle'
         TabOrder = 0
@@ -73,7 +73,7 @@ object FrmPrincipal: TFrmPrincipal
         DefaultItemStyles.GroupFooterStyle = ''
         GroupingKind = Grouped
         Viewport.Width = 249.000000000000000000
-        Viewport.Height = 528.000000000000000000
+        Viewport.Height = 576.000000000000000000
         object lstPesquisas: TListBoxGroupHeader
           Size.Width = 249.000000000000000000
           Size.Height = 56.000000000000000000

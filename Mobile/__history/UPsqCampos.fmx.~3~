@@ -1,0 +1,17 @@
+inherited FrmPsqCampos: TFrmPsqCampos
+  OnClose = FormClose
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    inherited tlbTitulo: TToolBar
+      inherited lblTitulo: TLabel
+        Text = 'Pesquisa de Campos'
+        inherited sbAdicionar: TSpeedButton
+          Visible = False
+        end
+        inherited sbAtualizar: TSpeedButton
+          Position.X = 354.000000000000000000
+        end
+      end
+    end
+  end
+end

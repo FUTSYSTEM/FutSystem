@@ -1,0 +1,63 @@
+unit UPsqMeusTimes;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
+  FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
+  UPsqPadrao, FMX.ListView.Types, MultiDetailAppearanceU, FMX.ListView,
+  FMX.Controls.Presentation, FMX.Layouts;
+
+type
+  TFrmPsqMeusTimes = class(TFrmPsqPadrao)
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure sbAtualizarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmPsqMeusTimes: TFrmPsqMeusTimes;
+
+implementation
+
+{$R *.fmx}
+
+uses UDMWebService;
+
+procedure TFrmPsqMeusTimes.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  inherited;
+  FrmPsqMeusTimes := nil;
+end;
+
+procedure TFrmPsqMeusTimes.sbAtualizarClick(Sender: TObject);
+begin
+  inherited;
+  //carrega resultados
+  try
+    lvPesquisa.BeginUpdate;
+    lvPesquisa.ClearItems;
+
+    DMWebService.CarregarTimesAtletas;
+    DMWebService.fdmTimesAtletas.First;
+    while not DMWebService.fdmTimesAtletas.Eof do
+    begin
+      with lvPesquisa.Items.Add do
+      begin
+        DMWebService.CarregarTimes(DMWebService.fdmTimesAtletasTim_Codigo.AsInteger);
+        Text  := DMWebService.fdmTimesTim_Nome.AsString;
+        Detail:= DMWebService.fdmTimesTim_DataFundacao.AsString;
+      end;
+      DMWebService.fdmTimesAtletas.Next;
+    end;
+    lvPesquisa.EndUpdate;
+  except
+    on E: Exception do
+      InterpretaMsgErro(e.Message);
+  end;
+end;
+
+end.

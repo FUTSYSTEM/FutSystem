@@ -28,6 +28,57 @@ type
     fdmCidadesCid_IBGE: TIntegerField;
     fdmCidadesCid_Nome: TStringField;
     fdmCidadesEst_Codigo: TIntegerField;
+    fdmAtletasAtl_DataNasc: TDateField;
+    fdmAtletasAtl_Sexo: TStringField;
+    fdmAtletasAtl_Telefone: TStringField;
+    fdmAtletasAtl_Celular: TStringField;
+    fdmAtletasAtl_Endereco: TStringField;
+    fdmAtletasAtl_Bairro: TStringField;
+    fdmAtletasAtl_NumEndereco: TIntegerField;
+    fdmAtletasAtl_CEP: TStringField;
+    fdmAtletasCid_IBGE: TIntegerField;
+    fdmAtletasAtl_Email: TStringField;
+    fdmAtletasAtl_Senha: TStringField;
+    fdmAtletasAtl_Posicao: TIntegerField;
+    fdmAtletasAtl_Status: TStringField;
+    fdmAtletasAtl_Caracteristica: TStringField;
+    fdmAtletasAtl_Obs: TStringField;
+    fdmTimesAtletas: TFDMemTable;
+    fdmTimesAtletasTim_Codigo: TIntegerField;
+    fdmTimesAtletasAtl_Codigo: TIntegerField;
+    fdmCampos: TFDMemTable;
+    fdmCamposCam_Codigo: TIntegerField;
+    fdmCamposCam_Nome: TStringField;
+    fdmCamposCam_Endereco: TStringField;
+    fdmCamposCam_NumEndereco: TIntegerField;
+    fdmCamposCam_Bairro: TStringField;
+    fdmCamposCam_CEP: TStringField;
+    fdmCamposCid_IBGE: TIntegerField;
+    fdmCamposCam_Email: TStringField;
+    fdmCamposCam_Senha: TStringField;
+    fdmCamposCam_TipoCampo: TIntegerField;
+    fdmCamposCam_Telefone: TStringField;
+    fdmCamposCam_Celular: TStringField;
+    fdmCamposCam_Obs: TStringField;
+    fdmCamposCam_Responsavel: TStringField;
+    fdmCamposCam_Status: TStringField;
+    fdmPartidas: TFDMemTable;
+    fdmPartidasPar_Codigo: TIntegerField;
+    fdmPartidasPar_Data: TDateField;
+    fdmPartidasPar_Horario: TTimeField;
+    fdmPartidasCam_Codigo: TIntegerField;
+    fdmPartidasPar_Status: TStringField;
+    fdmPartidasPar_TimeA: TIntegerField;
+    fdmPartidasPar_TimeB: TIntegerField;
+    fdmPartidasAtletas: TFDMemTable;
+    fdmPartidasAtletasPar_Codigo: TIntegerField;
+    fdmPartidasAtletasTim_Codigo: TIntegerField;
+    fdmPartidasAtletasAtl_Codigo: TIntegerField;
+    fdmPartidasAtletasPta_Compareceu: TStringField;
+    fdmPartidasAtletasPta_Gols: TIntegerField;
+    fdmPartidasAtletasPta_CAmarelos: TIntegerField;
+    fdmPartidasAtletasPta_CVermelhos: TIntegerField;
+    fdmPartidasAtletasPta_Assistencias: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
@@ -37,12 +88,12 @@ type
     //procedimentos que buscam dados do webservice
     procedure CarregarAtletas();
     procedure CarregarCampos();
-    procedure CarregarCidades();
+    procedure CarregarCidades(UF: string);
     procedure CarregarEstados();
-    procedure CarregarPartidas();
+    procedure CarregarPartidas(Atl_Codigo: Integer);
     procedure CarregarPartidasAtletas();
-    procedure CarregarTimes();
-    procedure CarregarTimesAtletas();
+    procedure CarregarTimes(const Tim_Codigo: Integer = 0);
+    procedure CarregarTimesAtletas(const Tim_Codigo: Integer = 0; const Atl_Codigo: Integer = 0);
     function  ValidaLogin( Email, Senha: string; TipoLogin: TTipoLogin): Boolean;
 
     //funções que enviam dados ao webservice
@@ -66,24 +117,76 @@ implementation
 {$R *.dfm}
 
 function TDMWebService.SalvarAtletas(Atleta: TAtleta): Boolean;
+var
+  WS : IWSFutSystem;  //variável webservice
 begin
-
+  try
+    Result := False;
+    WS     := HTTPRIO1 as IWSFutSystem;
+    if Atleta <> nil then
+    begin
+      WS.SetAtleta(Atleta);
+      Result := True;
+    end;
+  except
+    on e: Exception do
+       InterpretaMsgErro(e.Message);
+  end;
 end;
 
 function TDMWebService.SalvarCampos(Campo: TCampo): Boolean;
+var
+  WS : IWSFutSystem;  //variável webservice
 begin
-
+  try
+    Result := False;
+    WS     := HTTPRIO1 as IWSFutSystem;
+    if Campo <> nil then
+    begin
+      WS.SetCampo(Campo);
+      Result := True;
+    end;
+  except
+    on e: Exception do
+       InterpretaMsgErro(e.Message);
+  end;
 end;
 
 function TDMWebService.SalvarPartida(Partida: TPartida): Boolean;
+var
+  WS : IWSFutSystem;  //variável webservice
 begin
-
+  try
+    Result := False;
+    WS     := HTTPRIO1 as IWSFutSystem;
+    if Partida <> nil then
+    begin
+      WS.SetPartida(Partida);
+      Result := True;
+    end;
+  except
+    on e: Exception do
+       InterpretaMsgErro(e.Message);
+  end;
 end;
 
 function TDMWebService.SalvarPartidaAtletas(
   ListaAtletas: TListPartidasAtletas): Boolean;
+var
+  WS : IWSFutSystem;  //variável webservice
 begin
-
+  try
+    Result := False;
+    WS     := HTTPRIO1 as IWSFutSystem;
+    if ListaAtletas <> nil then
+    begin
+      WS.SetPartidaAtletas(ListaAtletas);
+      Result := True;
+    end;
+  except
+    on e: Exception do
+       InterpretaMsgErro(e.Message);
+  end;
 end;
 
 function TDMWebService.SalvarTime(Time: TTimes): Boolean;
@@ -119,8 +222,23 @@ begin
     for I := Low(ListaAtletas) to High(ListaAtletas) do
     begin
       fdmAtletas.Append;
-      fdmAtletasAtl_Codigo.AsInteger     := ListaAtletas[I].Codigo;
-      fdmAtletasAtl_NomeCompleto.AsString:= ListaAtletas[I].NomeCompleto;
+      fdmAtletasAtl_Codigo.AsInteger       := ListaAtletas[I].Codigo;
+      fdmAtletasAtl_NomeCompleto.AsString  := ListaAtletas[I].NomeCompleto;
+      fdmAtletasAtl_DataNasc.AsDateTime    := ListaAtletas[I].DataNasc;
+      fdmAtletasAtl_Sexo.AsString          := iif(ListaAtletas[I].Sexo = TSexo.tsMasculino, 'M', 'F');
+      fdmAtletasAtl_Telefone.AsString      := ListaAtletas[I].Telefone;
+      fdmAtletasAtl_Celular.AsString       := ListaAtletas[I].Celular;
+      fdmAtletasAtl_Endereco.AsString      := ListaAtletas[I].Endereco;
+      fdmAtletasAtl_NumEndereco.AsInteger  := ListaAtletas[I].NumEndereco;
+      fdmAtletasAtl_Bairro.AsString        := ListaAtletas[I].Bairro;
+      fdmAtletasAtl_CEP.AsString           := ListaAtletas[I].CEP;
+      fdmAtletasCid_IBGE.AsInteger         := ListaAtletas[I].Cid_IBGE;
+      fdmAtletasAtl_Email.AsString         := ListaAtletas[I].Email;
+      fdmAtletasAtl_Senha.AsString         := ListaAtletas[I].Senha;
+      fdmAtletasAtl_Posicao.AsInteger      := Ord(ListaAtletas[I].Posicao);
+      fdmAtletasAtl_Status.AsString        := iif(ListaAtletas[I].Status = TStatus.tsAtivo, 'A', 'I');
+      fdmAtletasAtl_Caracteristica.AsString:= ListaAtletas[I].Caracteristicas;
+      fdmAtletasAtl_Obs.AsString           := ListaAtletas[I].Observacao;
       fdmAtletas.Post;
     end;
     Finalize(ListaAtletas);
@@ -131,11 +249,45 @@ begin
 end;
 
 procedure TDMWebService.CarregarCampos;
+var
+  ListaCampos : TListCampos;
+  WS         : IWSFutSystem;  //variável webservice
+  I: Integer;
 begin
+  try
+    if fdmCampos.RecordCount > 0 then
+      fdmCampos.EmptyDataSet;
+    WS         := HTTPRIO1 as IWSFutSystem;
+    ListaCampos := WS.GetCampos();
 
+    for I := Low(ListaCampos) to High(ListaCampos) do
+    begin
+      fdmCampos.Append;
+      fdmCamposCam_Codigo.AsInteger        := ListaCampos[I].Codigo;
+      fdmCamposCam_Nome.AsString           := ListaCampos[I].Nome;
+      fdmCamposCam_Endereco.AsString       := ListaCampos[I].Endereco;
+      fdmCamposCam_NumEndereco.AsInteger   := ListaCampos[I].NumEndereco;
+      fdmCamposCam_Telefone.AsString       := ListaCampos[I].Telefone;
+      fdmCamposCam_Celular.AsString        := ListaCampos[I].Celular;
+      fdmCamposCam_Bairro.AsString         := ListaCampos[I].Bairro;
+      fdmCamposCam_CEP.AsString            := ListaCampos[I].CEP;
+      fdmCamposCid_IBGE.AsInteger          := ListaCampos[I].Cid_IBGE;
+      fdmCamposCam_Email.AsString          := ListaCampos[I].Email;
+      fdmCamposCam_Senha.AsString          := ListaCampos[I].Senha;
+      fdmCamposCam_TipoCampo.AsInteger     := Ord(ListaCampos[I].TipoCampo);
+      fdmCamposCam_Status.AsString         := iif(ListaCampos[I].Status = TStatus.tsAtivo, 'A', 'I');
+      fdmCamposCam_Responsavel.AsString    := ListaCampos[I].Responsavel;
+      fdmCamposCam_Obs.AsString            := ListaCampos[I].Observacao;
+      fdmCampos.Post;
+    end;
+    Finalize(ListaCampos);
+  except
+    on e: Exception do
+       InterpretaMsgErro(e.Message);
+  end;
 end;
 
-procedure TDMWebService.CarregarCidades;
+procedure TDMWebService.CarregarCidades(UF: string);
 var
   ListaCidades : TListCidades;
   WS         : IWSFutSystem;  //variável webservice
@@ -145,7 +297,7 @@ begin
     if fdmCidades.RecordCount > 0 then
       fdmCidades.EmptyDataSet;
     WS         := HTTPRIO1 as IWSFutSystem;
-    ListaCidades := WS.GetCidades('PR');
+    ListaCidades := WS.GetCidades(UF);
 
     for I := Low(ListaCidades) to High(ListaCidades) do
     begin
@@ -189,23 +341,86 @@ begin
   end;
 end;
 
-procedure TDMWebService.CarregarPartidas;
+procedure TDMWebService.CarregarPartidas(Atl_Codigo: Integer);
+var
+  ListaPartidas : TListPartidas;
+  WS         : IWSFutSystem;  //variável webservice
+  I: Integer;
 begin
+  try
+    if fdmPartidas.RecordCount > 0 then
+      fdmPartidas.EmptyDataSet;
+    WS         := HTTPRIO1 as IWSFutSystem;
+    ListaPartidas := WS.GetPartidas(Atl_Codigo);
 
+    for I := Low(ListaPartidas) to High(ListaPartidas) do
+    begin
+      fdmPartidas.Append;
+      fdmPartidasPar_Codigo.AsInteger  := ListaPartidas[I].Codigo;
+      fdmPartidasPar_Data.AsDateTime   := ListaPartidas[I].Data;
+      fdmPartidasPar_Horario.AsDateTime:= ListaPartidas[I].Horario;
+      fdmPartidasCam_Codigo.AsInteger  := ListaPartidas[I].Cam_Codigo;
+      fdmPartidasPar_Status.AsString   := iif(ListaPartidas[I].Status = TStatus.tsAtivo, 'A', 'I');
+      fdmPartidasPar_TimeA.AsInteger   := ListaPartidas[I].TimeA;
+      fdmPartidasPar_TimeB.AsInteger   := ListaPartidas[I].TimeB;
+      fdmPartidas.Post;
+    end;
+    Finalize(ListaPartidas);
+  except
+    on e: Exception do
+       InterpretaMsgErro(e.Message);
+  end;
 end;
 
 procedure TDMWebService.CarregarPartidasAtletas;
+var
+  ListaAtletas : TListPartidasAtletas;
+  WS         : IWSFutSystem;  //variável webservice
+  I: Integer;
 begin
+  try
+    if fdmPartidasAtletas.RecordCount > 0 then
+      fdmPartidasAtletas.EmptyDataSet;
+    WS         := HTTPRIO1 as IWSFutSystem;
+    ListaAtletas := WS.GetPartidasAtletas();
 
+    for I := Low(ListaAtletas) to High(ListaAtletas) do
+    begin
+      fdmPartidasAtletas.Append;
+      fdmPartidasAtletasAtl_Codigo.AsInteger       := ListaAtletas[I].Atl_Codigo;
+      fdmPartidasAtletasTim_Codigo.AsInteger       := ListaAtletas[I].Tim_Codigo;
+      fdmPartidasAtletasPar_Codigo.AsInteger       := ListaAtletas[I].Par_Codigo;
+      fdmPartidasAtletasPta_Gols.AsInteger         := ListaAtletas[I].Gols;
+      fdmPartidasAtletasPta_Assistencias.AsInteger := ListaAtletas[I].Assistencias;
+      fdmPartidasAtletasPta_CAmarelos.AsInteger    := ListaAtletas[I].CartAmarelo;
+      fdmPartidasAtletasPta_CVermelhos.AsInteger   := ListaAtletas[I].CartVermelho;
+      fdmPartidasAtletasPta_Compareceu.AsString    := iif( ListaAtletas[I].Compareceu, 'S', 'N');
+      fdmPartidasAtletas.Post;
+    end;
+    Finalize(ListaAtletas);
+  except
+    on e: Exception do
+       InterpretaMsgErro(e.Message);
+  end;
 end;
 
 function TDMWebService.SalvarTimeAtletas(
   ListaAtletas: TListTimesAtletas): Boolean;
+var
+  WS : IWSFutSystem;  //variável webservice
 begin
-
+  try
+    Result := False;
+    WS     := HTTPRIO1 as IWSFutSystem;
+    WS.SetTimeAtletas(ListaAtletas);
+    Result := True;
+  except
+    on e: Exception do
+       InterpretaMsgErro(e.Message);
+  end;
 end;
 
-procedure TDMWebService.CarregarTimes;
+procedure TDMWebService.CarregarTimes(const Tim_Codigo: Integer = 0);
 var
   ListaTimes : TListTimes;
   WS         : IWSFutSystem;  //variável webservice
@@ -215,7 +430,7 @@ begin
     if fdmTimes.RecordCount > 0 then
       fdmTimes.EmptyDataSet;
     WS         := HTTPRIO1 as IWSFutSystem;
-    ListaTimes := WS.GetTimes();
+    ListaTimes := WS.GetTimes(Tim_Codigo);
 
     for I := Low(ListaTimes) to High(ListaTimes) do
     begin
@@ -226,7 +441,6 @@ begin
       fdmTimesAtl_Codigo.AsInteger       := ListaTimes[I].Atl_Codigo;
       fdmTimes.Post;
     end;
-    fdmTimes.ApplyUpdates(0);
     Finalize(ListaTimes);
   except
     on e: Exception do
@@ -234,15 +448,44 @@ begin
   end;
 end;
 
-procedure TDMWebService.CarregarTimesAtletas;
+procedure TDMWebService.CarregarTimesAtletas(const Tim_Codigo: Integer = 0; const Atl_Codigo: Integer = 0);
+var
+  ListaAtletas : TListTimesAtletas;
+  WS         : IWSFutSystem;  //variável webservice
+  I: Integer;
 begin
+  try
+    if fdmTimesAtletas.RecordCount > 0 then
+      fdmTimesAtletas.EmptyDataSet;
+    WS         := HTTPRIO1 as IWSFutSystem;
+    ListaAtletas := WS.GetTimesAtletas(Tim_Codigo, Atl_Codigo);
 
+    for I := Low(ListaAtletas) to High(ListaAtletas) do
+    begin
+      fdmTimesAtletas.Append;
+      fdmTimesAtletasAtl_Codigo.AsInteger := ListaAtletas[I].Atl_Codigo;
+      fdmTimesAtletasTim_Codigo.AsInteger := ListaAtletas[I].Tim_Codigo;
+      fdmTimesAtletas.Post;
+    end;
+    Finalize(ListaAtletas);
+  except
+    on e: Exception do
+       InterpretaMsgErro(e.Message);
+  end;
 end;
 
 procedure TDMWebService.DataModuleCreate(Sender: TObject);
 begin
   fdmTimes.CreateDataSet;
   fdmAtletas.CreateDataSet;
+  fdmCidades.CreateDataSet;
+  fdmEstados.CreateDataSet;
+  fdmCampos.CreateDataSet;
+  fdmTimesAtletas.CreateDataSet;
+  fdmPartidas.CreateDataSet;
+  fdmPartidasAtletas.CreateDataSet;
+
+  CarregarEstados;
 end;
 
 function TDMWebService.ValidaLogin(Email, Senha: string;

@@ -1,10 +1,10 @@
 object DMWebService: TDMWebService
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 288
+  Height = 225
   Width = 381
   object HTTPRIO1: THTTPRIO
-    WSDLLocation = 'http://localhost:8080/wsdl/IWSFutSystem'
+    WSDLLocation = 'http://192.168.24.102:8080/wsdl/IWSFutSystem'
     Service = 'IWSFutSystemservice'
     Port = 'IWSFutSystemPort'
     HTTPWebNode.UseUTF8InHeader = True
@@ -50,14 +50,69 @@ object DMWebService: TDMWebService
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
     StoreDefs = True
-    Left = 104
-    Top = 96
+    Left = 200
+    Top = 168
     object fdmAtletasAtl_Codigo: TIntegerField
       FieldName = 'Atl_Codigo'
     end
     object fdmAtletasAtl_NomeCompleto: TStringField
       FieldName = 'Atl_NomeCompleto'
       Size = 60
+    end
+    object fdmAtletasAtl_DataNasc: TDateField
+      FieldName = 'Atl_DataNasc'
+    end
+    object fdmAtletasAtl_Sexo: TStringField
+      FieldName = 'Atl_Sexo'
+      Size = 1
+    end
+    object fdmAtletasAtl_Telefone: TStringField
+      FieldName = 'Atl_Telefone'
+      Size = 15
+    end
+    object fdmAtletasAtl_Celular: TStringField
+      FieldName = 'Atl_Celular'
+      Size = 15
+    end
+    object fdmAtletasAtl_Endereco: TStringField
+      FieldName = 'Atl_Endereco'
+      Size = 60
+    end
+    object fdmAtletasAtl_Bairro: TStringField
+      FieldName = 'Atl_Bairro'
+      Size = 40
+    end
+    object fdmAtletasAtl_NumEndereco: TIntegerField
+      FieldName = 'Atl_NumEndereco'
+    end
+    object fdmAtletasAtl_CEP: TStringField
+      FieldName = 'Atl_CEP'
+      Size = 8
+    end
+    object fdmAtletasCid_IBGE: TIntegerField
+      FieldName = 'Cid_IBGE'
+    end
+    object fdmAtletasAtl_Email: TStringField
+      FieldName = 'Atl_Email'
+      Size = 60
+    end
+    object fdmAtletasAtl_Senha: TStringField
+      FieldName = 'Atl_Senha'
+    end
+    object fdmAtletasAtl_Posicao: TIntegerField
+      FieldName = 'Atl_Posicao'
+    end
+    object fdmAtletasAtl_Status: TStringField
+      FieldName = 'Atl_Status'
+      Size = 1
+    end
+    object fdmAtletasAtl_Caracteristica: TStringField
+      FieldName = 'Atl_Caracteristica'
+      Size = 2
+    end
+    object fdmAtletasAtl_Obs: TStringField
+      FieldName = 'Atl_Obs'
+      Size = 200
     end
   end
   object fdmCidades: TFDMemTable
@@ -87,7 +142,7 @@ object DMWebService: TDMWebService
     ResourceOptions.SilentMode = True
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
-    Left = 104
+    Left = 112
     Top = 168
     object fdmEstadosEst_Codigo: TIntegerField
       FieldName = 'Est_Codigo'
@@ -99,6 +154,154 @@ object DMWebService: TDMWebService
     object fdmEstadosEst_Sigla: TStringField
       FieldName = 'Est_Sigla'
       Size = 2
+    end
+  end
+  object fdmTimesAtletas: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    Left = 112
+    Top = 96
+    object fdmTimesAtletasTim_Codigo: TIntegerField
+      FieldName = 'Tim_Codigo'
+    end
+    object fdmTimesAtletasAtl_Codigo: TIntegerField
+      FieldName = 'Atl_Codigo'
+    end
+  end
+  object fdmCampos: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    Left = 280
+    Top = 168
+    object fdmCamposCam_Codigo: TIntegerField
+      FieldName = 'Cam_Codigo'
+    end
+    object fdmCamposCam_Nome: TStringField
+      FieldName = 'Cam_Nome'
+      Size = 60
+    end
+    object fdmCamposCam_Endereco: TStringField
+      FieldName = 'Cam_Endereco'
+      Size = 60
+    end
+    object fdmCamposCam_NumEndereco: TIntegerField
+      FieldName = 'Cam_NumEndereco'
+    end
+    object fdmCamposCam_Bairro: TStringField
+      FieldName = 'Cam_Bairro'
+      Size = 60
+    end
+    object fdmCamposCam_CEP: TStringField
+      FieldName = 'Cam_CEP'
+      Size = 8
+    end
+    object fdmCamposCid_IBGE: TIntegerField
+      FieldName = 'Cid_IBGE'
+    end
+    object fdmCamposCam_Email: TStringField
+      FieldName = 'Cam_Email'
+      Size = 60
+    end
+    object fdmCamposCam_Senha: TStringField
+      FieldName = 'Cam_Senha'
+    end
+    object fdmCamposCam_TipoCampo: TIntegerField
+      FieldName = 'Cam_TipoCampo'
+    end
+    object fdmCamposCam_Telefone: TStringField
+      FieldName = 'Cam_Telefone'
+      Size = 15
+    end
+    object fdmCamposCam_Celular: TStringField
+      FieldName = 'Cam_Celular'
+      Size = 15
+    end
+    object fdmCamposCam_Obs: TStringField
+      FieldName = 'Cam_Obs'
+      Size = 200
+    end
+    object fdmCamposCam_Responsavel: TStringField
+      FieldName = 'Cam_Responsavel'
+      Size = 1
+    end
+    object fdmCamposCam_Status: TStringField
+      FieldName = 'Cam_Status'
+      Size = 1
+    end
+  end
+  object fdmPartidas: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    Left = 192
+    Top = 96
+    object fdmPartidasPar_Codigo: TIntegerField
+      FieldName = 'Par_Codigo'
+    end
+    object fdmPartidasPar_Data: TDateField
+      FieldName = 'Par_Data'
+    end
+    object fdmPartidasPar_Horario: TTimeField
+      FieldName = 'Par_Horario'
+    end
+    object fdmPartidasCam_Codigo: TIntegerField
+      FieldName = 'Cam_Codigo'
+    end
+    object fdmPartidasPar_Status: TStringField
+      FieldName = 'Par_Status'
+      Size = 1
+    end
+    object fdmPartidasPar_TimeA: TIntegerField
+      FieldName = 'Par_TimeA'
+    end
+    object fdmPartidasPar_TimeB: TIntegerField
+      FieldName = 'Par_TimeB'
+    end
+  end
+  object fdmPartidasAtletas: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    Left = 280
+    Top = 96
+    object fdmPartidasAtletasPar_Codigo: TIntegerField
+      FieldName = 'Par_Codigo'
+    end
+    object fdmPartidasAtletasTim_Codigo: TIntegerField
+      FieldName = 'Tim_Codigo'
+    end
+    object fdmPartidasAtletasAtl_Codigo: TIntegerField
+      FieldName = 'Atl_Codigo'
+    end
+    object fdmPartidasAtletasPta_Compareceu: TStringField
+      FieldName = 'Pta_Compareceu'
+      Size = 1
+    end
+    object fdmPartidasAtletasPta_Gols: TIntegerField
+      FieldName = 'Pta_Gols'
+    end
+    object fdmPartidasAtletasPta_CAmarelos: TIntegerField
+      FieldName = 'Pta_CAmarelos'
+    end
+    object fdmPartidasAtletasPta_CVermelhos: TIntegerField
+      FieldName = 'Pta_CVermelhos'
+    end
+    object fdmPartidasAtletasPta_Assistencias: TIntegerField
+      FieldName = 'Pta_Assistencias'
     end
   end
 end

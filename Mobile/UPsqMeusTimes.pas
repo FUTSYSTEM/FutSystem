@@ -11,6 +11,8 @@ uses
 type
   TFrmPsqMeusTimes = class(TFrmPsqPadrao)
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure sbAtualizarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -24,10 +26,45 @@ implementation
 
 {$R *.fmx}
 
+uses UDMWebService, UFuncoes;
+
 procedure TFrmPsqMeusTimes.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   inherited;
   FrmPsqMeusTimes := nil;
+end;
+
+procedure TFrmPsqMeusTimes.FormCreate(Sender: TObject);
+begin
+  inherited;
+  sbAtualizarClick(Self);
+end;
+
+procedure TFrmPsqMeusTimes.sbAtualizarClick(Sender: TObject);
+begin
+  inherited;
+  //carrega resultados
+  try
+    lvPesquisa.BeginUpdate;
+    lvPesquisa.ClearItems;
+
+    DMWebService.CarregarTimesAtletas(0, Usuario.Codigo);
+    DMWebService.fdmTimesAtletas.First;
+    while not DMWebService.fdmTimesAtletas.Eof do
+    begin
+      with lvPesquisa.Items.Add do
+      begin
+        DMWebService.CarregarTimes(DMWebService.fdmTimesAtletasTim_Codigo.AsInteger);
+        Text  := DMWebService.fdmTimesTim_Nome.AsString;
+        Detail:= DMWebService.fdmTimesTim_DataFundacao.AsString;
+      end;
+      DMWebService.fdmTimesAtletas.Next;
+    end;
+    lvPesquisa.EndUpdate;
+  except
+    on E: Exception do
+      InterpretaMsgErro(e.Message);
+  end;
 end;
 
 end.

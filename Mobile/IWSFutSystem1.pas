@@ -224,7 +224,7 @@ type
   private
     FCodigo: Integer;
     FData: TDate;
-    FHorario: TXSDateTime;
+    FHorario: TDateTime;
     FCam_Codigo: Integer;
     FStatus: TStatus;
     FTimeA: Integer;
@@ -234,7 +234,7 @@ type
   published
     property Codigo:     Integer      read FCodigo write FCodigo;
     property Data:       TDate        read FData write FData;
-    property Horario:    TXSDateTime  read FHorario write FHorario;
+    property Horario:    TDateTime    read FHorario write FHorario;
     property Cam_Codigo: Integer      read FCam_Codigo write FCam_Codigo;
     property Status:     TStatus      read FStatus write FStatus;
     property TimeA:      Integer      read FTimeA write FTimeA;
@@ -301,10 +301,10 @@ type
     function  GetCampos(const Codigo: Integer = 0; const Cid_IBGE: Integer = 0): TListCampos; stdcall;
     function  GetCidades(const UF: string): TListCidades; stdcall;
     function  GetEstados: TListEstados; stdcall;
-    function  GetPartidas(const Codigo: Integer): TListPartidas; stdcall;
-    function  GetPartidasAtletas(const Par_Codigo: Integer; const Atl_Codigo: Integer): TListPartidasAtletas; stdcall;
+    function  GetPartidas(const Atl_Codigo: Integer = 0): TListPartidas; stdcall;
+    function  GetPartidasAtletas(const Par_Codigo: Integer = 0; const Atl_Codigo: Integer = 0): TListPartidasAtletas; stdcall;
     function  GetTimes(const Codigo: Integer = 0; const Cid_IBGE: Integer = 0): TListTimes; stdcall;
-    function  GetTimesAtletas(const Tim_Codigo: Integer; const Atl_Codigo: Integer): TListTimesAtletas; stdcall;
+    function  GetTimesAtletas(const Tim_Codigo: Integer = 0; const Atl_Codigo: Integer = 0): TListTimesAtletas; stdcall;
     function  ValidaLogin(const Email: string; const Senha: string; const TipoLogin: TTipoLogin): Integer; stdcall;
     function  SetAtleta(const Atleta: TAtleta): Boolean; stdcall;
     function  SetCampo(const Campo: TCampo): Boolean; stdcall;
@@ -324,8 +324,8 @@ implementation
 
 function GetIWSFutSystem(UseWSDL: Boolean; Addr: string; HTTPRIO: THTTPRIO): IWSFutSystem;
 const
-  defWSDL = 'http://localhost:8080/wsdl/IWSFutSystem';
-  defURL  = 'http://localhost:8080/soap/IWSFutSystem';
+  defWSDL = 'http://192.168.24.102:8080/wsdl/IWSFutSystem';
+  defURL  = 'http://192.168.24.102:8080/soap/IWSFutSystem';
   defSvc  = 'IWSFutSystemservice';
   defPrt  = 'IWSFutSystemPort';
 var

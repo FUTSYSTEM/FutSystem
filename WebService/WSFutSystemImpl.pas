@@ -17,7 +17,7 @@ type
     function GetCampos(const Codigo: Integer = 0; const Cid_IBGE: Integer = 0): TListCampos; stdcall;
     function GetCidades(UF: string): TListCidades; stdcall;
     function GetEstados: TListEstados; stdcall;
-    function GetPartidas(const Codigo: Integer = 0): TListPartidas; stdcall;
+    function GetPartidas(const Atl_Codigo: Integer = 0): TListPartidas; stdcall;
     function GetPartidasAtletas(const Par_Codigo: Integer = 0; const Atl_Codigo: Integer = 0): TListPartidasAtletas; stdcall;
     function GetTimes(const Codigo: Integer = 0; const Cid_IBGE: Integer = 0): TListTimes; stdcall;
     function GetTimesAtletas(const Tim_Codigo: Integer = 0; const Atl_Codigo: Integer = 0): TListTimesAtletas; stdcall;
@@ -117,6 +117,7 @@ begin
         SQL.Add('AND Atl_Codigo = :Codigo');
       if Cid_IBGE > 0 then
         SQL.Add('AND Cid_IBGE = :Cid_IBGE');
+      SQL.Add('ORDER BY Atl_NomeCompleto');
       if Codigo > 0 then
         ParamByName('Codigo').AsInteger  := Codigo;
       if Cid_IBGE > 0 then
@@ -184,6 +185,7 @@ begin
         SQL.Add('AND Cam_Codigo = :Codigo');
       if Cid_IBGE > 0 then
         SQL.Add('AND Cid_IBGE = :Cid_IBGE');
+      SQL.Add('ORDER BY Cam_Nome');
       if Codigo > 0 then
         ParamByName('Codigo').AsInteger  := Codigo;
       if Cid_IBGE > 0 then
@@ -244,6 +246,7 @@ begin
       SQL.Add('INNER JOIN ESTADOS E ON E.EST_CODIGO = C.EST_CODIGO');
       SQL.Add('WHERE');
       SQL.Add('  EST_SIGLA = :SIGLA');
+      SQL.Add('ORDER BY Cid_Nome');
       ParamByName('SIGLA').AsString := UF;
       Open();
       Last;
@@ -286,6 +289,7 @@ begin
       Close;
       SQL.Clear;
       SQL.Add('SELECT * FROM ESTADOS');
+      SQL.Add('ORDER BY Est_Sigla');
       Open();
       Last;
       First;
@@ -316,7 +320,7 @@ begin
   end;
 end;
 
-function TWSFutSystem.GetPartidas(const Codigo: Integer = 0): TListPartidas;
+function TWSFutSystem.GetPartidas(const Atl_Codigo: Integer = 0): TListPartidas;
 var
   ListaPartidas: TListPartidas;
   Partida : TPartida;
@@ -327,13 +331,15 @@ begin
     begin
       Close;
       SQL.Clear;
-      SQL.Add('SELECT * FROM Partidas');
-      if Codigo > 0 then
+      SQL.Add('SELECT DISTINCT P.* FROM Partidas P');
+      SQL.Add('INNER JOIN Partidas_Atletas PA ON PA.Par_Codigo = P.Par_Codigo');
+      if Atl_Codigo > 0 then
       begin
         SQL.Add('WHERE');
-        SQL.Add('  Par_Codigo = :Codigo');
-        ParamByName('Codigo').AsInteger := Codigo;
+        SQL.Add('  PA.Atl_Codigo = :Atl_Codigo');
+        ParamByName('Atl_Codigo').AsInteger := Atl_Codigo;
       end;
+      SQL.Add('ORDER BY Par_Data, Par_Horario');
       Open();
       Last;
       First;
@@ -445,8 +451,9 @@ begin
         SQL.Add('AND Tim_Codigo = :Tim_Codigo');
       if Cid_IBGE > 0 then
         SQL.Add('AND Cid_IBGE = :Cid_IBGE');
+      SQL.Add('ORDER BY Tim_Nome');
       if Codigo > 0 then
-        ParamByName('Codigo').AsInteger  := Codigo;
+        ParamByName('Tim_Codigo').AsInteger:= Codigo;
       if Cid_IBGE > 0 then
         ParamByName('Cid_IBGE').AsInteger:= Cid_IBGE;
       Open();

@@ -1,0 +1,11 @@
+inherited FrmPsqMeusTimes: TFrmPsqMeusTimes
+  OnClose = FormClose
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    inherited tlbTitulo: TToolBar
+      inherited lblTitulo: TLabel
+        Text = 'Meus Times'
+      end
+    end
+  end
+end

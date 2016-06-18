@@ -1,0 +1,26 @@
+inherited FrmCadTime_XLgXhdpiTb: TFrmCadTime_XLgXhdpiTb
+  ClientHeight = 1255
+  ClientWidth = 800
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    Size.Width = 800.000000000000000000
+    Size.Height = 1255.000000000000000000
+    inherited tlbTitulo: TToolBar
+      Size.Width = 800.000000000000000000
+      inherited lblTitulo: TLabel
+        Size.Width = 800.000000000000000000
+      end
+    end
+    inherited edtNomeTime: TEdit
+      Size.Width = 748.000000000000000000
+    end
+    inherited btnCancelar: TButton
+      Position.Y = 1211.000000000000000000
+      Size.Width = 800.000000000000000000
+    end
+    inherited btnSalvar: TButton
+      Position.Y = 1167.000000000000000000
+      Size.Width = 800.000000000000000000
+    end
+  end
+end

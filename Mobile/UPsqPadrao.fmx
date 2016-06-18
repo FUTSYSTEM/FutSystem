@@ -3,7 +3,9 @@ inherited FrmPsqPadrao: TFrmPsqPadrao
   inherited lytMain: TLayout
     inherited tlbTitulo: TToolBar
       inherited lblTitulo: TLabel
-        object sbAdicionar: TSpeedButton [0]
+        StyledSettings = [Family, FontColor]
+        TextSettings.Font.Style = [fsBold]
+        object sbAdicionar: TSpeedButton
           Align = Right
           Margins.Left = 8.000000000000000000
           Position.X = 354.000000000000000000
@@ -13,7 +15,7 @@ inherited FrmPsqPadrao: TFrmPsqPadrao
           StyleLookup = 'addtoolbutton'
           Text = 'Voltar'
         end
-        object sbAtualizar: TSpeedButton [1]
+        object sbAtualizar: TSpeedButton
           Align = Right
           Margins.Left = 8.000000000000000000
           Position.X = 298.000000000000000000

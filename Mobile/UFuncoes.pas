@@ -17,6 +17,7 @@ uses FMX.Dialogs, System.UITypes, IWSFutSystem1;
     procedure MsgAviso(Msg: string);
     procedure MsgErro(Msg: string);
     procedure MsgInforma(Msg: string);
+    function  iif(Expressao: Boolean; Valor1, Valor2: Variant): Variant;
 
     procedure InterpretaMsgErro(Msg: string);
 
@@ -74,11 +75,24 @@ end;
 
 procedure InterpretaMsgErro(Msg: string);
 begin
-  //caso seja um erro não encontrado, joga mensagem padrão
-  Msg := 'Falha na comunicação não identificada: '
-          + #10 +#13 + Msg + #10 +#13 + 'Tente novamente mais tarde.';
+  if Pos('Unable to load WSDL', Msg) > 0 then
+    Msg := 'WebService não encontrado. Tente novamente mais tarde.'
+  else if Pos('Uma conexão com o servidor não pode ser estabelecida', Msg) > 0 then
+    Msg := 'Servidor em manutenção. Tente novamente mais tarde.'
+  else
+    //caso seja um erro não encontrado, joga mensagem padrão
+    Msg := 'Falha na comunicação não identificada: '
+            + #10 +#13 + Msg + #10 +#13 + 'Tente novamente mais tarde.';
 
   MsgErro(Msg);
+end;
+
+function  iif(Expressao: Boolean; Valor1, Valor2: Variant): Variant;
+begin
+  if Expressao then
+    Result := Valor1
+  else
+    Result := Valor2;
 end;
 
 end.
