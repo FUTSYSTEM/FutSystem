@@ -47,6 +47,7 @@ var
 implementation
 
 {$R *.fmx}
+{$R *.LgXhdpiPh.fmx ANDROID}
 
 uses UPrincipal, UFuncoes, IWSFutSystem1, UDMWebService, UCadAtleta, UCadCampo;
 {$R *.SmXhdpiPh.fmx ANDROID}

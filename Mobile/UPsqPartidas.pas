@@ -51,6 +51,8 @@ begin
 end;
 
 procedure TFrmPsqPartidas.sbAtualizarClick(Sender: TObject);
+var
+  temp: string;
 begin
   inherited;
 
@@ -66,14 +68,14 @@ begin
       with lvPesquisa.Items.Add do
       begin
         DMWebService.CarregarTimes(DMWebService.fdmPartidasPar_TimeA.AsInteger);
-        Text  := DMWebService.fdmTimesTim_Nome.AsString + ' x ';
+        temp  := DMWebService.fdmTimesTim_Nome.AsString + ' x ';
         DMWebService.CarregarTimes(DMWebService.fdmPartidasPar_TimeB.AsInteger);
-        Text  := Text + DMWebService.fdmTimesTim_Nome.AsString;
+        Text  := temp + DMWebService.fdmTimesTim_Nome.AsString;
       end;
 
       DMWebService.fdmPartidas.Next;
     end;
-    //lvPesquisa.EndUpdate;
+    lvPesquisa.EndUpdate;
   except
     on E: Exception do
       InterpretaMsgErro(e.Message);

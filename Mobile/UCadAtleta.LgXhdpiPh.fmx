@@ -1,0 +1,25 @@
+inherited FrmCadAtleta_LgXhdpiPh: TFrmCadAtleta_LgXhdpiPh
+  ClientHeight = 695
+  ClientWidth = 450
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    Size.Width = 450.000000000000000000
+    Size.Height = 695.000000000000000000
+    inherited tlbTitulo: TToolBar
+      Size.Width = 450.000000000000000000
+      inherited lblTitulo: TLabel
+        Size.Width = 450.000000000000000000
+      end
+    end
+    inherited btnSalvar: TButton
+      Position.Y = 651.000000000000000000
+      Size.Width = 450.000000000000000000
+    end
+    inherited Label15: TLabel
+      Position.Y = 541.000000000000000000
+    end
+    inherited edtCaracteristicas: TEdit
+      Position.Y = 562.000000000000000000
+    end
+  end
+end

@@ -4,7 +4,7 @@ object DMWebService: TDMWebService
   Height = 225
   Width = 381
   object HTTPRIO1: THTTPRIO
-    WSDLLocation = 'http://192.168.24.102:8080/wsdl/IWSFutSystem'
+    WSDLLocation = 'http://localhost:8080/wsdl/IWSFutSystem'
     Service = 'IWSFutSystemservice'
     Port = 'IWSFutSystemPort'
     HTTPWebNode.UseUTF8InHeader = True

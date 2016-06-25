@@ -324,8 +324,8 @@ implementation
 
 function GetIWSFutSystem(UseWSDL: Boolean; Addr: string; HTTPRIO: THTTPRIO): IWSFutSystem;
 const
-  defWSDL = 'http://192.168.24.102:8080/wsdl/IWSFutSystem';
-  defURL  = 'http://192.168.24.102:8080/soap/IWSFutSystem';
+  defWSDL = 'http://localhost:8080/wsdl/IWSFutSystem';
+  defURL  = 'http://localhost:8080/soap/IWSFutSystem';
   defSvc  = 'IWSFutSystemservice';
   defPrt  = 'IWSFutSystemPort';
 var
