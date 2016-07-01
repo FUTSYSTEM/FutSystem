@@ -36,6 +36,7 @@ type
     FEndereco: string;
     FTelefone: string;
     FCelular: string;
+    FEst_Codigo: Integer;
     procedure SetCodigo(const Value: Integer);
     procedure SetNomeCompleto(const Value: string);
     procedure SetBairro(const Value: string);
@@ -53,6 +54,7 @@ type
     procedure SetSexo(const Value: TSexo);
     procedure SetStatus(const Value: TStatus);
     procedure SetTelefone(const Value: string);
+    procedure SetEst_Codigo(const Value: Integer);
 
   published
     property Codigo         : Integer   read FCodigo          write SetCodigo;
@@ -65,6 +67,7 @@ type
     property Bairro         : string    read FBairro          write SetBairro;
     property NumEndereco    : Integer   read FNumEndereco     write SetNumEndereco;
     property CEP            : string    read FCEP             write SetCEP;
+    property Est_Codigo     : Integer   read FEst_Codigo      write SetEst_Codigo;
     property Cid_IBGE       : Integer   read FCid_IBGE        write SetCid_IBGE;
     property Email          : string    read FEmail           write SetEmail;
     property Senha          : string    read FSenha           write SetSenha;
@@ -93,6 +96,7 @@ type
     FEndereco: String;
     FTelefone: String;
     FCelular: String;
+    FEst_Codigo: Integer;
     procedure SetBairro(const Value: String);
     procedure SetCelular(const Value: String);
     procedure SetCEP(const Value: String);
@@ -108,6 +112,7 @@ type
     procedure SetStatus(const Value: TStatus);
     procedure SetTelefone(const Value: String);
     procedure SetTipoCampo(const Value: TTipoCampo);
+    procedure SetEst_Codigo(const Value: Integer);
   published
     property Codigo     : Integer    read FCodigo      write SetCodigo;
     property Nome       : String     read FNome        write SetNome;
@@ -115,6 +120,7 @@ type
     property NumEndereco: Integer    read FNumEndereco write SetNumEndereco;
     property Bairro     : String     read FBairro      write SetBairro;
     property CEP        : String     read FCEP         write SetCEP;
+    property Est_Codigo : Integer    read FEst_Codigo  write SetEst_Codigo;
     property Cid_IBGE   : Integer    read FCid_IBGE    write SetCid_IBGE;
     property Email      : String     read FEmail       write SetEmail;
     property Senha      : String     read FSenha       write SetSenha;
@@ -274,7 +280,7 @@ type
     function GetCampos(const Codigo: Integer = 0; const Cid_IBGE: Integer = 0): TListCampos; stdcall;
     function GetCidades(UF: string): TListCidades; stdcall;
     function GetEstados: TListEstados; stdcall;
-    function GetPartidas(const Codigo: Integer = 0): TListPartidas; stdcall;
+    function GetPartidas(const Codigo: Integer = 0; const Par_Codigo: Integer = 0): TListPartidas; stdcall;
     function GetPartidasAtletas(const Par_Codigo: Integer = 0; const Atl_Codigo: Integer = 0): TListPartidasAtletas; stdcall;
     function GetTimes(const Codigo: Integer = 0; const Cid_IBGE: Integer = 0): TListTimes; stdcall;
     function GetTimesAtletas(const Tim_Codigo: Integer = 0; const Atl_Codigo: Integer = 0): TListTimesAtletas; stdcall;
@@ -285,12 +291,12 @@ type
     function SetCampo(Campo : TCampo): Boolean; stdcall;
     function SetPartida(Partida : TPartida): Boolean; stdcall;
     function SetPartidaAtletas(Atletas_Partida: TListPartidasAtletas): Boolean; stdcall;
-    function SetTime(Equipe : TTimes) : Boolean; stdcall;
+    function SetTime(Equipe : TTimes) : Integer; stdcall;
     function SetTimeAtletas(Atletas_Times: TListTimesAtletas): Boolean; stdcall;
 
     //Delete
     function DeletePartidaAtleta(Par_Codigo, Atl_Codigo, Tim_Codigo: Integer): Boolean;
-    function DeleteTimeAtleta(Atl_Codigo, Tim_Codigo: Integer): Boolean;
+    function DeleteTimeAtleta(Tim_Codigo: Integer): Boolean;
   end;
 
 implementation
@@ -340,6 +346,11 @@ end;
 procedure TAtleta.SetEndereco(const Value: string);
 begin
   FEndereco := Value;
+end;
+
+procedure TAtleta.SetEst_Codigo(const Value: Integer);
+begin
+  FEst_Codigo := Value;
 end;
 
 procedure TAtleta.SetNomeCompleto(const Value: string);
@@ -417,6 +428,11 @@ end;
 procedure TCampo.SetEndereco(const Value: String);
 begin
   FEndereco := Value;
+end;
+
+procedure TCampo.SetEst_Codigo(const Value: Integer);
+begin
+  FEst_Codigo := Value;
 end;
 
 procedure TCampo.SetNome(const Value: String);

@@ -24,18 +24,6 @@ Coordinates=82,298,54,51
 Coordinates=101,260,82,33
 Visible=True
 
-[DMWebService.fdmTimes]
-Coordinates=270,120,140,33
-
 [DMWebService.]
 Coordinates=529,110,139,123
-
-[DMWebService.fdmEstados]
-Coordinates=118,1,150,105
-
-[DMWebService.fdmCidades]
-Coordinates=287,1,150,105
-
-[DMWebService.fdmAtletas]
-Coordinates=287,125,144,87
 

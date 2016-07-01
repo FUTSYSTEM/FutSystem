@@ -19,7 +19,8 @@ uses
   UPsqCampos in 'UPsqCampos.pas' {FrmPsqCampos},
   UPsqPartidas in 'UPsqPartidas.pas' {FrmPsqPartidas},
   UPsqMeusTimes in 'UPsqMeusTimes.pas' {FrmPsqMeusTimes},
-  UPsqAtletasTimes in 'UPsqAtletasTimes.pas' {FrmPsqAtletasTimes};
+  UPsqAtletasTimes in 'UPsqAtletasTimes.pas' {FrmPsqAtletasTimes},
+  UFrmPsqAtletasPartida in 'UFrmPsqAtletasPartida.pas' {FrmPsqAtletasPartida};
 
 {$R *.res}
 
@@ -27,6 +28,5 @@ begin
   Application.Initialize;
   Application.CreateForm(TFrmLogin, FrmLogin);
   Application.CreateForm(TDMWebService, DMWebService);
-  Application.CreateForm(TFrmPsqAtletasTimes, FrmPsqAtletasTimes);
   Application.Run;
 end.

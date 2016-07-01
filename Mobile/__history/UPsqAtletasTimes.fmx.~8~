@@ -1,0 +1,34 @@
+inherited FrmPsqAtletasTimes: TFrmPsqAtletasTimes
+  OnClose = FormClose
+  OnShow = FormShow
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    inherited tlbTitulo: TToolBar
+      inherited lblTitulo: TLabel
+        Text = 'Atletas do Time'
+        inherited sbAdicionar: TSpeedButton
+          OnClick = sbAdicionarClick
+        end
+        inherited sbAtualizar: TSpeedButton
+          OnClick = sbAtualizarClick
+        end
+      end
+    end
+    inherited lvPesquisa: TListView
+      OnItemClick = lvPesquisaItemClick
+    end
+  end
+  object fdmAtletas: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    Left = 152
+    Top = 136
+    object fdmAtletasTim_Codigo: TIntegerField
+      FieldName = 'Tim_Codigo'
+    end
+  end
+end

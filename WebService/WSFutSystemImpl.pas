@@ -17,7 +17,7 @@ type
     function GetCampos(const Codigo: Integer = 0; const Cid_IBGE: Integer = 0): TListCampos; stdcall;
     function GetCidades(UF: string): TListCidades; stdcall;
     function GetEstados: TListEstados; stdcall;
-    function GetPartidas(const Atl_Codigo: Integer = 0): TListPartidas; stdcall;
+    function GetPartidas(const Atl_Codigo: Integer = 0; const Par_Codigo: Integer = 0): TListPartidas; stdcall;
     function GetPartidasAtletas(const Par_Codigo: Integer = 0; const Atl_Codigo: Integer = 0): TListPartidasAtletas; stdcall;
     function GetTimes(const Codigo: Integer = 0; const Cid_IBGE: Integer = 0): TListTimes; stdcall;
     function GetTimesAtletas(const Tim_Codigo: Integer = 0; const Atl_Codigo: Integer = 0): TListTimesAtletas; stdcall;
@@ -28,12 +28,12 @@ type
     function SetCampo(Campo: TCampo)      : Boolean; stdcall;
     function SetPartida(Partida: TPartida): Boolean; stdcall;
     function SetPartidaAtletas(Atletas_Partida: TListPartidasAtletas): Boolean; stdcall;
-    function SetTime(Equipe: TTimes)      : Boolean; stdcall;
+    function SetTime(Equipe: TTimes)      : Integer; stdcall;
     function SetTimeAtletas(Atletas_Times: TListTimesAtletas): Boolean; stdcall;
 
     //Delete
     function DeletePartidaAtleta(Par_Codigo, Atl_Codigo, Tim_Codigo: Integer): Boolean;
-    function DeleteTimeAtleta(Atl_Codigo, Tim_Codigo: Integer): Boolean;
+    function DeleteTimeAtleta(Tim_Codigo: Integer): Boolean;
 
   end;
 
@@ -73,7 +73,7 @@ begin
   end;
 end;
 
-function TWSFutSystem.DeleteTimeAtleta(Atl_Codigo, Tim_Codigo: Integer): Boolean;
+function TWSFutSystem.DeleteTimeAtleta(Tim_Codigo: Integer): Boolean;
 begin
   Result := False;
   try
@@ -83,9 +83,8 @@ begin
       Close;
       SQL.Clear;
       SQL.Add('DELETE FROM Times_Atletas');
-      SQL.Add('WHERE Tim_Codigo = :Tim_Codigo and Atl_Codigo = :Atl_Codigo');
+      SQL.Add('WHERE Tim_Codigo = :Tim_Codigo');
       ParamByName('Tim_Codigo').AsInteger  := Tim_Codigo;
-      ParamByName('Atl_Codigo').AsInteger  := Atl_Codigo;
       ExecSQL();
 
       DModulo.DBCommit;
@@ -111,7 +110,8 @@ begin
     begin
       Close;
       SQL.Clear;
-      SQL.Add('SELECT * FROM Atletas');
+      SQL.Add('SELECT A.*, C.Est_Codigo FROM Atletas A');
+      SQL.Add('INNER JOIN Cidades C on C.Cid_IBGE = A.Cid_IBGE');
       SQL.Add('WHERE 1 > 0');
       if Codigo > 0 then
         SQL.Add('AND Atl_Codigo = :Codigo');
@@ -146,6 +146,7 @@ begin
         Bairro          := DModulo.fdqAuxiliar.FieldByName('Atl_Bairro').AsString;
         NumEndereco     := DModulo.fdqAuxiliar.FieldByName('Atl_NumEndereco').AsInteger;
         CEP             := DModulo.fdqAuxiliar.FieldByName('Atl_CEP').AsString;
+        Est_Codigo      := DModulo.fdqAuxiliar.FieldByName('Est_Codigo').AsInteger;
         Cid_IBGE        := DModulo.fdqAuxiliar.FieldByName('Cid_IBGE').AsInteger;
         Email           := DModulo.fdqAuxiliar.FieldByName('Atl_Email').AsString;
         Senha           := DModulo.fdqAuxiliar.FieldByName('Atl_Senha').AsString;
@@ -179,7 +180,8 @@ begin
     begin
       Close;
       SQL.Clear;
-      SQL.Add('SELECT * FROM Campos');
+      SQL.Add('SELECT C.*, Cid.Est_Codigo FROM Campos C');
+      SQL.Add('INNER JOIN Cidades Cid on Cid.Cid_IBGE = C.Cid_IBGE');
       SQL.Add('WHERE 1 > 0');
       if Codigo > 0 then
         SQL.Add('AND Cam_Codigo = :Codigo');
@@ -209,6 +211,7 @@ begin
         NumEndereco := DModulo.fdqAuxiliar.FieldByName('Cam_NumEndereco').AsInteger;
         Bairro      := DModulo.fdqAuxiliar.FieldByName('Cam_Bairro').AsString;
         CEP         := DModulo.fdqAuxiliar.FieldByName('Cam_CEP').AsString;
+        Est_Codigo  := DModulo.fdqAuxiliar.FieldByName('Est_Codigo').AsInteger;
         Cid_IBGE    := DModulo.fdqAuxiliar.FieldByName('Cid_IBGE').AsInteger;
         Email       := DModulo.fdqAuxiliar.FieldByName('Cam_Email').AsString;
         Senha       := DModulo.fdqAuxiliar.FieldByName('Cam_Senha').AsString;
@@ -320,7 +323,7 @@ begin
   end;
 end;
 
-function TWSFutSystem.GetPartidas(const Atl_Codigo: Integer = 0): TListPartidas;
+function TWSFutSystem.GetPartidas(const Atl_Codigo: Integer = 0; const Par_Codigo: Integer = 0): TListPartidas;
 var
   ListaPartidas: TListPartidas;
   Partida : TPartida;
@@ -332,13 +335,16 @@ begin
       Close;
       SQL.Clear;
       SQL.Add('SELECT DISTINCT P.* FROM Partidas P');
-      SQL.Add('INNER JOIN Partidas_Atletas PA ON PA.Par_Codigo = P.Par_Codigo');
+      SQL.Add('LEFT JOIN Partidas_Atletas PA ON PA.Par_Codigo = P.Par_Codigo');
+      SQL.Add('WHERE 1 > 0');
       if Atl_Codigo > 0 then
-      begin
-        SQL.Add('WHERE');
-        SQL.Add('  PA.Atl_Codigo = :Atl_Codigo');
+        SQL.Add(' AND PA.Atl_Codigo = :Atl_Codigo');
+      if Par_Codigo > 0 then
+        SQL.Add(' AND PA.Par_Codigo = :Par_Codigo');
+      if Atl_Codigo > 0 then
         ParamByName('Atl_Codigo').AsInteger := Atl_Codigo;
-      end;
+      if Par_Codigo > 0 then
+        ParamByName('Par_Codigo').AsInteger := Par_Codigo;
       SQL.Add('ORDER BY Par_Data, Par_Horario');
       Open();
       Last;
@@ -528,7 +534,7 @@ begin
         Atl_Codigo := DModulo.fdqAuxiliar.FieldByName('Atl_Codigo').AsInteger;
         Tim_Codigo := DModulo.fdqAuxiliar.FieldByName('Tim_Codigo').AsInteger;
       end;
-      ListaTimesAtletas[DModulo.fdqAuxiliar.RecordCount -1] := TimeAtletas;
+      ListaTimesAtletas[DModulo.fdqAuxiliar.RecNo -1] := TimeAtletas;
       DModulo.fdqAuxiliar.Next;
     end;
 
@@ -559,10 +565,10 @@ begin
 
       DModulo.DBStartTrans;
 
-      Close;
-      SQL.Clear;
       if IsEmpty then
       begin
+        Close;
+        SQL.Clear;
         SQL.Add('INSERT INTO Atletas');
         SQL.Add('(Atl_Codigo, Atl_NomeCompleto, Atl_DataNasc, Atl_Sexo, Atl_Status,');
         SQL.Add('Atl_Telefone, Atl_Celular, Atl_Endereco, Atl_Bairro, Atl_NumEndereco,');
@@ -574,6 +580,8 @@ begin
       end
       else
       begin
+        Close;
+        SQL.Clear;
         SQL.Add('UPDATE Atletas SET');
         SQL.Add('  Atl_NomeCompleto   = :Atl_NomeCompleto,');
         SQL.Add('  Atl_DataNasc       = :Atl_DataNasc,');
@@ -644,10 +652,11 @@ begin
 
       DModulo.DBStartTrans;
 
-      Close;
-      SQL.Clear;
+
       if IsEmpty then
       begin
+        Close;
+        SQL.Clear;
         SQL.Add('INSERT INTO Campos');
         SQL.Add('(Cam_Codigo, Cam_Nome, Cam_Responsavel, Cam_Status,');
         SQL.Add('Cam_Telefone, Cam_Celular, Cam_Endereco, Cam_Bairro, Cam_NumEndereco,');
@@ -659,6 +668,8 @@ begin
       end
       else
       begin
+        Close;
+        SQL.Clear;
         SQL.Add('UPDATE Campos SET');
         SQL.Add('  Cam_Nome        = :Cam_Nome,');
         SQL.Add('  Cam_Status      = :Cam_Status,');
@@ -838,9 +849,9 @@ begin
   end;
 end;
 
-function TWSFutSystem.SetTime(Equipe: TTimes): Boolean;
+function TWSFutSystem.SetTime(Equipe: TTimes): Integer;
 begin
-  Result:= False;
+  Result         := 0;
   try
     if Equipe.Codigo = 0 then
       Equipe.Codigo := DModulo.RetornaProxCodigo('Times', 'Tim_Codigo');
@@ -857,10 +868,10 @@ begin
 
       DModulo.DBStartTrans;
 
-      Close;
-      SQL.Clear;
       if IsEmpty then
       begin
+        Close;
+        SQL.Clear;
         SQL.Add('INSERT INTO Times');
         SQL.Add('(Tim_Codigo, Tim_Nome, Tim_DataFundacao, Atl_Codigo)');
         SQL.Add('VALUES');
@@ -868,10 +879,12 @@ begin
       end
       else
       begin
+        Close;
+        SQL.Clear;
         SQL.Add('UPDATE Times SET');
         SQL.Add('  Tim_Nome         = :Tim_Nome,');
         SQL.Add('  Tim_DataFundacao = :Tim_DataFundacao,');
-        SQL.Add('  Atl_Codigo       = :Atl_Codigo,');
+        SQL.Add('  Atl_Codigo       = :Atl_Codigo');
         SQL.Add('WHERE');
         SQL.Add('  Tim_Codigo = :Tim_Codigo');
       end;
@@ -881,8 +894,9 @@ begin
       ParamByName('Atl_Codigo').AsInteger       := Equipe.Atl_Codigo;
       ExecSQL;
 
+
       DModulo.DBCommit;
-      Result := True;
+      Result := Equipe.Codigo;
     end;
   except
     on E: Exception do

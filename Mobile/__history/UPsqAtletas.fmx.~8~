@@ -1,0 +1,19 @@
+inherited FrmPsqAtletas: TFrmPsqAtletas
+  OnCreate = FormCreate
+  OnClose = FormClose
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    inherited tlbTitulo: TToolBar
+      inherited lblTitulo: TLabel
+        Text = 'Pesquisa de Atletas'
+        inherited sbAdicionar: TSpeedButton
+          Visible = False
+        end
+        inherited sbAtualizar: TSpeedButton
+          Position.X = 354.000000000000000000
+          OnClick = sbAtualizarClick
+        end
+      end
+    end
+  end
+end

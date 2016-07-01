@@ -27,6 +27,7 @@ type
     lstMeusTimes: TListBoxItem;
     lstPartidas: TListBoxItem;
     tlbTitulo: TToolBar;
+    lblOla: TLabel;
     procedure FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
     procedure sbSairClick(Sender: TObject);
@@ -37,6 +38,7 @@ type
     procedure lstTimesClick(Sender: TObject);
     procedure lstPartidasClick(Sender: TObject);
     procedure lstMeusTimesClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -44,6 +46,7 @@ type
 
     procedure ShowBackground(AParent: TFmxObject; AOnClick: TNotifyEvent = nil);
     procedure HideBackground;
+    procedure DefinirAcessos;
   end;
 
 var
@@ -57,6 +60,29 @@ uses ULogin, UCadAtleta, UCadCampo, UDMWebService, IWSFutSystem1, UPsqAtletas,
   UPsqCampos, UPsqTimes, UPsqPartidas, UPsqMeusTimes;
 
 { TFrmPrincipal }
+
+procedure TFrmPrincipal.DefinirAcessos;
+begin
+  //permissões atletas
+  if Usuario.TipoLogin = TTipoLogin.tlAtleta then
+  begin
+    lstCampos.Visible   := True;
+    lstCampos.Height    := 44;
+    lstMeusTimes.Visible:= True;
+    lstMeusTimes.Height := 44;
+    lstTimes.Visible    := True;
+    lstTimes.Height     := 44;
+  end
+  else  //permissões campos
+  begin
+    lstCampos.Visible   := False;
+    lstCampos.Height    := 0;
+    lstMeusTimes.Visible:= False;
+    lstMeusTimes.Height := 0;
+    lstTimes.Visible    := False;
+    lstTimes.Height     := 0;
+  end;
+end;
 
 procedure TFrmPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
@@ -114,6 +140,12 @@ begin
 
 end;
 
+procedure TFrmPrincipal.FormShow(Sender: TObject);
+begin
+  lblOla.Text := 'Olá, ' + Usuario.NomeAcesso;
+  DefinirAcessos;
+end;
+
 //retira fundo preto
 procedure TFrmPrincipal.HideBackground;
 begin
@@ -156,12 +188,14 @@ begin
   begin
     if  not Assigned(FrmCadCampo) then
       FrmCadCampo := TFrmCadCampo.Create(Self);
+    FrmCadCampo.Editando := True;
     FrmCadCampo.Show;
   end
   else  //cadastro de atleta
   begin
     if  not Assigned(FrmCadAtleta) then
       FrmCadAtleta := TFrmCadAtleta.Create(Self);
+    FrmCadAtleta.Editando := True;
     FrmCadAtleta.Show;
   end;
 end;

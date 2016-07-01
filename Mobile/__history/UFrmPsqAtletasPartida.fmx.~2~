@@ -1,0 +1,11 @@
+inherited FrmPsqAtletasPartida: TFrmPsqAtletasPartida
+  OnClose = FormClose
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    inherited tlbTitulo: TToolBar
+      inherited lblTitulo: TLabel
+        Text = 'Atletas'
+      end
+    end
+  end
+end

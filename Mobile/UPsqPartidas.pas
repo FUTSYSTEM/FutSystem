@@ -14,6 +14,8 @@ type
     procedure sbAdicionarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure sbAtualizarClick(Sender: TObject);
+    procedure lvPesquisaItemClick(const Sender: TObject;
+      const AItem: TListViewItem);
   private
     { Private declarations }
   public
@@ -41,6 +43,18 @@ begin
   sbAtualizarClick(Self);
 end;
 
+procedure TFrmPsqPartidas.lvPesquisaItemClick(const Sender: TObject;
+  const AItem: TListViewItem);
+begin
+  inherited;
+  if not Assigned(FrmCadPartida) then
+    FrmCadPartida := TFrmCadPartida.Create(Self);
+  FrmCadPartida.Editando        := True;
+  FrmCadPartida.ApenasVisualizar:= True;
+  FrmCadPartida.CodPartida      := StrToInt(AItem.Detail);
+  FrmCadPartida.Show;
+end;
+
 procedure TFrmPsqPartidas.sbAdicionarClick(Sender: TObject);
 begin
   inherited;
@@ -61,7 +75,7 @@ begin
     lvPesquisa.BeginUpdate;
     lvPesquisa.ClearItems;
 
-    DMWebService.CarregarPartidas(Usuario.Codigo);
+    DMWebService.CarregarPartidas(0);
     DMWebService.fdmPartidas.First;
     while not DMWebService.fdmPartidas.Eof do
     begin
@@ -71,6 +85,8 @@ begin
         temp  := DMWebService.fdmTimesTim_Nome.AsString + ' x ';
         DMWebService.CarregarTimes(DMWebService.fdmPartidasPar_TimeB.AsInteger);
         Text  := temp + DMWebService.fdmTimesTim_Nome.AsString;
+
+        Detail:= DMWebService.fdmPartidasPar_Codigo.AsString;
       end;
 
       DMWebService.fdmPartidas.Next;

@@ -1,0 +1,134 @@
+inherited FrmCadPartida: TFrmCadPartida
+  ClientWidth = 377
+  OnCreate = FormCreate
+  OnClose = FormClose
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    Size.Width = 377.000000000000000000
+    inherited tlbTitulo: TToolBar
+      Size.Width = 377.000000000000000000
+      TabOrder = 7
+      inherited lblTitulo: TLabel
+        Size.Width = 377.000000000000000000
+        Text = 'Marcar Partida'
+      end
+    end
+    object btnSalvar: TButton
+      Align = Bottom
+      Position.Y = 532.000000000000000000
+      Size.Width = 377.000000000000000000
+      Size.Height = 44.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 10
+      Text = 'Salvar'
+      OnClick = btnSalvarClick
+    end
+    object edtData: TDateEdit
+      IsEmpty = True
+      Date = 42542.000000000000000000
+      Position.X = 24.000000000000000000
+      Position.Y = 96.000000000000000000
+      Size.Width = 169.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+    end
+    object edtHorario: TTimeEdit
+      IsEmpty = True
+      Time = 0.027083333333333330
+      Position.X = 224.000000000000000000
+      Position.Y = 96.000000000000000000
+      Size.Width = 113.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+    end
+    object Label1: TLabel
+      Position.X = 24.000000000000000000
+      Position.Y = 72.000000000000000000
+      Text = 'Data'
+    end
+    object Label2: TLabel
+      Position.X = 224.000000000000000000
+      Position.Y = 72.000000000000000000
+      Text = 'Hor'#225'rio'
+    end
+    object lblLocal: TLabel
+      Position.X = 24.000000000000000000
+      Position.Y = 139.000000000000000000
+      Text = 'Local'
+    end
+    object edtLocal: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 2
+      ReturnKeyType = Next
+      ReadOnly = True
+      Position.X = 24.000000000000000000
+      Position.Y = 161.000000000000000000
+      Size.Width = 313.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      OnClick = edtLocalClick
+    end
+    object Label3: TLabel
+      Position.X = 24.000000000000000000
+      Position.Y = 206.000000000000000000
+      Text = 'Equipe A'
+    end
+    object Label4: TLabel
+      Position.X = 24.000000000000000000
+      Position.Y = 331.000000000000000000
+      Text = 'Equipe B'
+    end
+    object btnAtletasTimeA: TButton
+      StyledSettings = [Size, FontColor]
+      Position.X = 24.000000000000000000
+      Position.Y = 276.000000000000000000
+      Size.Width = 313.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'listitembutton'
+      TabOrder = 4
+      Text = 'Atletas Time A'
+      TextSettings.Font.Family = 'Segoe UI Semibold'
+      TextSettings.Font.Style = [fsBold]
+    end
+    object btnAtletasTimeB: TButton
+      StyledSettings = [Size, FontColor]
+      Position.X = 24.000000000000000000
+      Position.Y = 397.000000000000000000
+      Size.Width = 313.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'listitembutton'
+      TabOrder = 6
+      Text = 'Atletas Time B'
+      TextSettings.Font.Family = 'Segoe UI Semibold'
+      TextSettings.Font.Style = [fsBold]
+    end
+    object edtEquipeA: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 3
+      ReturnKeyType = Next
+      ReadOnly = True
+      Position.X = 24.000000000000000000
+      Position.Y = 241.000000000000000000
+      Size.Width = 313.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      OnClick = edtEquipeAClick
+    end
+    object edtEquipeB: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 5
+      ReturnKeyType = Next
+      ReadOnly = True
+      Position.X = 24.000000000000000000
+      Position.Y = 361.000000000000000000
+      Size.Width = 313.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      OnClick = edtEquipeBClick
+    end
+  end
+end

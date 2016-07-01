@@ -50,11 +50,6 @@ implementation
 {$R *.LgXhdpiPh.fmx ANDROID}
 
 uses UPrincipal, UFuncoes, IWSFutSystem1, UDMWebService, UCadAtleta, UCadCampo;
-{$R *.SmXhdpiPh.fmx ANDROID}
-{$R *.LgXhdpiPh.fmx ANDROID}
-{$R *.GGlass.fmx ANDROID}
-{$R *.NmXhdpiPh.fmx ANDROID}
-{$R *.iPhone4in.fmx IOS}
 
 procedure TFrmLogin.btnFecharClick(Sender: TObject);
 begin

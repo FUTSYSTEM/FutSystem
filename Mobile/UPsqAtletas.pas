@@ -15,6 +15,8 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure sbAtualizarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure lvPesquisaItemClick(const Sender: TObject;
+      const AItem: TListViewItem);
   private
     { Private declarations }
   public
@@ -28,7 +30,8 @@ implementation
 
 {$R *.fmx}
 
-uses IWSFutSystem1, UDMWebService, UFuncoes;
+uses IWSFutSystem1, UDMWebService, UFuncoes, UCadAtleta, UCadTime,
+  UPsqAtletasTimes;
 
 procedure TFrmPsqAtletas.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
@@ -40,6 +43,38 @@ procedure TFrmPsqAtletas.FormCreate(Sender: TObject);
 begin
   inherited;
   sbAtualizarClick(Self);
+end;
+
+procedure TFrmPsqAtletas.lvPesquisaItemClick(const Sender: TObject;
+  const AItem: TListViewItem);
+begin
+  inherited;
+  if Assigned(FrmPsqAtletasTimes) then
+  begin
+    with FrmPsqAtletasTimes do
+    begin
+      if fdmAtletas.Locate('Atl_Codigo', StrToInt(AItem.Detail), []) then
+        MsgAviso('Atleta já está inserido na equipe.')
+      else
+      begin
+        fdmAtletas.Append;
+        fdmAtletasAtl_Codigo.AsInteger := StrToInt(AItem.Detail);
+        fdmAtletas.Post;
+
+        sbAtualizarClick(Self);
+      end;
+    end;
+    Close;
+  end
+  else
+  begin
+    if  not Assigned(FrmCadAtleta) then
+      FrmCadAtleta := TFrmCadAtleta.Create(Self);
+    FrmCadAtleta.CodAtleta        := StrToInt(AItem.Detail);
+    FrmCadAtleta.Editando         := True;
+    FrmCadAtleta.ApenasVisualizar := True;
+    FrmCadAtleta.Show;
+  end;
 end;
 
 procedure TFrmPsqAtletas.sbAtualizarClick(Sender: TObject);

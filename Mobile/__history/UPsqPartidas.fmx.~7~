@@ -1,0 +1,27 @@
+inherited FrmPsqPartidas: TFrmPsqPartidas
+  ClientWidth = 382
+  OnCreate = FormCreate
+  OnClose = FormClose
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    Size.Width = 382.000000000000000000
+    inherited tlbTitulo: TToolBar
+      Size.Width = 382.000000000000000000
+      inherited lblTitulo: TLabel
+        Size.Width = 382.000000000000000000
+        Text = 'Pesquisa de Partidas'
+        inherited sbAdicionar: TSpeedButton
+          Position.X = 334.000000000000000000
+          OnClick = sbAdicionarClick
+        end
+        inherited sbAtualizar: TSpeedButton
+          Position.X = 278.000000000000000000
+          OnClick = sbAtualizarClick
+        end
+      end
+    end
+    inherited lvPesquisa: TListView
+      Size.Width = 382.000000000000000000
+    end
+  end
+end

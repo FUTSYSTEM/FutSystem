@@ -16,6 +16,8 @@ type
     procedure sbAdicionarClick(Sender: TObject);
     procedure sbAtualizarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure lvPesquisaItemClick(const Sender: TObject;
+      const AItem: TListViewItem);
   private
     { Private declarations }
   public
@@ -29,7 +31,7 @@ implementation
 
 {$R *.fmx}
 
-uses UDMWebService, UCadTime, UFuncoes;
+uses UDMWebService, UCadTime, UFuncoes, UCadPartida;
 
 procedure TFrmPsqTimes.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
@@ -41,6 +43,39 @@ procedure TFrmPsqTimes.FormCreate(Sender: TObject);
 begin
   sbAtualizarClick(Self);
   inherited;
+end;
+
+procedure TFrmPsqTimes.lvPesquisaItemClick(const Sender: TObject;
+  const AItem: TListViewItem);
+begin
+  inherited;
+  DMWebService.fdmTimes.Locate('Tim_Codigo', AItem.Detail, []);
+
+  if Owner.ClassName = 'TFrmCadPartida' then
+  begin
+    //retorna dados ao controle que está chamando
+    if FrmCadPartida.Acao = atTimeA then
+    begin
+      FrmCadPartida.Partida.TimeA   := DMWebService.fdmTimesTim_Codigo.AsInteger;
+      FrmCadPartida.edtEquipeA.Text := DMWebService.fdmTimesTim_Nome.AsString;
+    end
+    else
+    begin
+      FrmCadPartida.Partida.TimeB   := DMWebService.fdmTimesTim_Codigo.AsInteger;
+      FrmCadPartida.edtEquipeB.Text := DMWebService.fdmTimesTim_Nome.AsString;
+    end;
+    Close;
+  end
+  else
+  begin
+    //edição
+    if not Assigned(FrmCadTime) then
+      FrmCadTime := TFrmCadTime.Create(Self);
+    FrmCadTime.Editando         := True;
+    FrmCadTime.ApenasVisualizar := True;
+    FrmCadTime.CodTime          := StrToInt(AItem.Detail);
+    FrmCadTime.Show;
+  end;
 end;
 
 procedure TFrmPsqTimes.sbAdicionarClick(Sender: TObject);
@@ -67,7 +102,7 @@ begin
       with lvPesquisa.Items.Add do
       begin
         Text  := DMWebService.fdmTimesTim_Nome.AsString;
-        Detail:= DMWebService.fdmTimesTim_DataFundacao.AsString;
+        Detail:= DMWebService.fdmTimesTim_Codigo.AsString;
       end;
       DMWebService.fdmTimes.Next;
     end;

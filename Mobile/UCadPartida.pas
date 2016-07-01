@@ -9,8 +9,10 @@ uses
   FMX.DateTimeCtrls, IWSFutSystem1;
 
 type
+
+  TAcaoTime = (atTimeA, atTimeB);
+
   TFrmCadPartida = class(TFrmPadrao)
-    btnCancelar: TButton;
     btnSalvar: TButton;
     edtData: TDateEdit;
     edtHorario: TTimeEdit;
@@ -20,21 +22,31 @@ type
     edtLocal: TEdit;
     Label3: TLabel;
     Label4: TLabel;
-    cbbEquipeA: TComboBox;
-    cbbEquipeB: TComboBox;
+    btnAtletasTimeA: TButton;
+    btnAtletasTimeB: TButton;
+    edtEquipeA: TEdit;
+    edtEquipeB: TEdit;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure cbbEquipeAClick(Sender: TObject);
-    procedure cbbEquipeBClick(Sender: TObject);
     procedure edtLocalClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnSalvarClick(Sender: TObject);
+    procedure edtEquipeAClick(Sender: TObject);
+    procedure edtEquipeBClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure btnAtletasTimeAClick(Sender: TObject);
+    procedure btnAtletasTimeBClick(Sender: TObject);
   private
     { Private declarations }
-    Partida: TPartida;
-    Editando : Boolean;
     procedure LimparDados;
+    function  ValidaCampos: Boolean;
+    procedure CarregarDados;
+    procedure DesabilitarCampos;
   public
     { Public declarations }
+    Partida: TPartida;
+    Acao   : TAcaoTime;
+    Editando, ApenasVisualizar : Boolean;
+    CodPartida : Integer;
   end;
 
 var
@@ -43,12 +55,33 @@ var
 implementation
 
 {$R *.fmx}
+{$R *.LgXhdpiPh.fmx ANDROID}
 
-uses UPsqTimes, UPsqCampos, UDMWebService, UPsqPartidas, UFuncoes;
+uses UPsqTimes, UPsqCampos, UDMWebService, UPsqPartidas, UFuncoes,
+  UFrmPsqAtletasPartida;
+
+procedure TFrmCadPartida.btnAtletasTimeAClick(Sender: TObject);
+begin
+  inherited;
+  if not Assigned(FrmPsqAtletasPartida) then
+    FrmPsqAtletasPartida := TFrmPsqAtletasPartida.Create(Self);
+  FrmPsqAtletasPartida.Show;
+end;
+
+procedure TFrmCadPartida.btnAtletasTimeBClick(Sender: TObject);
+begin
+  inherited;
+  if not Assigned(FrmPsqAtletasPartida) then
+    FrmPsqAtletasPartida := TFrmPsqAtletasPartida.Create(Self);
+  FrmPsqAtletasPartida.Show;
+end;
 
 procedure TFrmCadPartida.btnSalvarClick(Sender: TObject);
 begin
   inherited;
+  if not ValidaCampos then
+    Exit;
+
   Partida.Data    := edtData.Date;
   Partida.Horario := edtHorario.Time;
 
@@ -61,17 +94,62 @@ begin
     MsgAviso('Falha ao salvar registro. Tente novamente mais tarde.');
 end;
 
-procedure TFrmCadPartida.cbbEquipeAClick(Sender: TObject);
+procedure TFrmCadPartida.CarregarDados;
+begin
+  if CodPartida > 0 then
+  begin
+    DMWebService.CarregarPartidas(0, CodPartida);
+    DMWebService.CarregarPartidasAtletas(CodPartida);
+  end;
+
+  Partida.Codigo     := CodPartida;
+  Partida.Data       := DMWebService.fdmPartidasPar_Data.AsDateTime;
+  Partida.Horario    := DMWebService.fdmPartidasPar_Horario.AsDateTime;
+  Partida.Cam_Codigo := DMWebService.fdmPartidasCam_Codigo.AsInteger;
+  Partida.Status     := TStatus.tsAtivo;
+  Partida.TimeA      := DMWebService.fdmPartidasPar_TimeA.AsInteger;
+  Partida.TimeB      := DMWebService.fdmPartidasPar_TimeB.AsInteger;
+
+
+  edtData.Date       := Partida.Data;
+  edtHorario.Time    := Partida.Horario;
+
+  //carrega campo
+  DMWebService.CarregarCampos(Partida.Cam_Codigo);
+  edtLocal.Text      := DMWebService.fdmCamposCam_Nome.AsString;
+
+  //carrega equipe A
+  DMWebService.CarregarTimes(Partida.TimeA);
+  edtEquipeA.Text    := DMWebService.fdmTimesTim_Nome.AsString;
+
+  //carrega equipe B
+  DMWebService.CarregarTimes(Partida.TimeB);
+  edtEquipeB.Text    := DMWebService.fdmTimesTim_Nome.AsString;
+end;
+
+procedure TFrmCadPartida.DesabilitarCampos;
+begin
+  edtLocal.Enabled   := False;
+  edtEquipeA.Enabled := False;
+  edtEquipeB.Enabled := False;
+  edtData.Enabled    := False;
+  edtHorario.Enabled := False;
+  btnSalvar.Enabled  := False;
+end;
+
+procedure TFrmCadPartida.edtEquipeAClick(Sender: TObject);
 begin
   inherited;
+  Acao := atTimeA;
   if not Assigned(FrmPsqTimes) then
     FrmPsqTimes := TFrmPsqTimes.Create(Self);
   FrmPsqTimes.Show;
 end;
 
-procedure TFrmCadPartida.cbbEquipeBClick(Sender: TObject);
+procedure TFrmCadPartida.edtEquipeBClick(Sender: TObject);
 begin
   inherited;
+  Acao := atTimeB;
   if not Assigned(FrmPsqTimes) then
     FrmPsqTimes := TFrmPsqTimes.Create(Self);
   FrmPsqTimes.Show;
@@ -97,9 +175,20 @@ begin
   LimparDados;
 end;
 
+procedure TFrmCadPartida.FormShow(Sender: TObject);
+begin
+  inherited;
+  if Editando then
+    CarregarDados;
+  if ApenasVisualizar then
+    DesabilitarCampos;
+end;
+
+//limpa campos
 procedure TFrmCadPartida.LimparDados;
 begin
-  Editando      := False;
+  Editando          := False;
+  ApenasVisualizar  := False;
   if Partida = nil then
     Partida := TPartida.Create;
 
@@ -111,11 +200,83 @@ begin
   Partida.TimeA        := 0;
   Partida.TimeB        := 0;
 
-  edtData.Text         := '__/__/____';
-  edtHorario.Text      := '__:__';
-  edtLocal.Text        := '';
-  cbbEquipeA.ItemIndex := -1;
-  cbbEquipeB.ItemIndex := -1;
+  edtLocal.Text        := EmptyStr;
+  edtEquipeA.Text      := EmptyStr;
+  edtEquipeB.Text      := EmptyStr;
+  Acao                 := atTimeA;
+end;
+
+function TFrmCadPartida.ValidaCampos: Boolean;
+begin
+  Result := False;
+
+  //valida data
+  if edtData.IsEmpty then
+  begin
+    MsgAviso('Informe a data da partida.');
+    edtData.SetFocus;
+    Exit;
+  end;
+
+
+  if edtData.Date < Date then
+  begin
+    MsgAviso('Data informada é menor que a data atual.');
+    edtData.SetFocus;
+    Exit;
+  end;
+
+  //valida horario
+  if edtHorario.IsEmpty then
+  begin
+    MsgAviso('Informe o horário da partida.');
+    edtHorario.SetFocus;
+    Exit;
+  end;
+
+  if edtData.Date = Date then
+  begin
+    if edtHorario.Time < Time then
+    begin
+      MsgAviso('Horário para a partida de hoje deve ser maior que o horário atual.');
+      edtHorario.SetFocus;
+      Exit;
+    end;
+  end;
+
+  //valida campo
+  if Partida.Cam_Codigo = 0 then
+  begin
+    MsgAviso('Selecione o local da partida.');
+    edtLocal.SetFocus;
+    Exit;
+  end;
+
+  //valida equipe A
+  if Partida.TimeA = 0 then
+  begin
+    MsgAviso('Selecione a equipe mandante(Equipe A).');
+    edtEquipeA.SetFocus;
+    Exit;
+  end;
+
+  //valida equipe B
+  if Partida.TimeB = 0 then
+  begin
+    MsgAviso('Selecione a equipe visitante(Equipe B).');
+    edtEquipeB.SetFocus;
+    Exit;
+  end;
+
+  //valida times
+  if Partida.TimeB = Partida.TimeA then
+  begin
+    MsgAviso('Selecione duas equipes diferentes.');
+    edtEquipeA.SetFocus;
+    Exit;
+  end;
+
+  Result := True;
 end;
 
 end.

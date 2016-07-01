@@ -13,6 +13,8 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure sbAtualizarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure lvPesquisaItemClick(const Sender: TObject;
+      const AItem: TListViewItem);
   private
     { Private declarations }
   public
@@ -26,7 +28,7 @@ implementation
 
 {$R *.fmx}
 
-uses IWSFutSystem1, UDMWebService, UFuncoes;
+uses IWSFutSystem1, UDMWebService, UFuncoes, UCadPartida, UCadCampo;
 
 procedure TFrmPsqCampos.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
@@ -38,6 +40,31 @@ procedure TFrmPsqCampos.FormCreate(Sender: TObject);
 begin
   inherited;
   sbAtualizarClick(Self);
+end;
+
+procedure TFrmPsqCampos.lvPesquisaItemClick(const Sender: TObject;
+  const AItem: TListViewItem);
+begin
+  inherited;
+
+  DMWebService.fdmCampos.Locate('Cam_Codigo', AItem.Detail, []);
+
+  if Owner.ClassName = 'TFrmCadPartida' then
+  begin
+    FrmCadPartida.Partida.Cam_Codigo := DMWebService.fdmCamposCam_Codigo.AsInteger;
+    FrmCadPartida.edtLocal.Text      := DMWebService.fdmCamposCam_Nome.AsString;
+    Close;
+  end
+  else
+  begin
+    //visualizar campo
+    if  not Assigned(FrmCadCampo) then
+      FrmCadCampo := TFrmCadCampo.Create(Self);
+    FrmCadCampo.Editando        := True;
+    FrmCadCampo.ApenasVisualizar:= True;
+    FrmCadCampo.CodCampo        := StrToInt(AItem.Detail);
+    FrmCadCampo.Show;
+  end;
 end;
 
 procedure TFrmPsqCampos.sbAtualizarClick(Sender: TObject);
@@ -56,7 +83,7 @@ begin
       with lvPesquisa.Items.Add do
       begin
         Text  := DMWebService.fdmCamposCam_Nome.AsString;
-        Detail:= DMWebService.fdmCamposCam_Email.AsString;
+        Detail:= DMWebService.fdmCamposCam_Codigo.AsString;
       end;
 
       DMWebService.fdmCampos.Next;

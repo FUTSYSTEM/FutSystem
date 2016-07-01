@@ -56,7 +56,7 @@ object FrmPrincipal: TFrmPrincipal
     Width = 75
     Height = 21
     TabOrder = 2
-    Text = '8080'
+    Text = '8081'
   end
   object ButtonOpenBrowser: TButton
     Left = 266

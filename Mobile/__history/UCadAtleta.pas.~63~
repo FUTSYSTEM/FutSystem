@@ -1,0 +1,321 @@
+unit UCadAtleta;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
+  FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
+  UPadrao, FMX.Controls.Presentation, FMX.Layouts, FMX.ListBox,
+  FMX.DateTimeCtrls, FMX.Edit, IWSFutSystem1;
+
+type
+  TFrmCadAtleta = class(TFrmPadrao)
+    btnSalvar: TButton;
+    edtNome: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    dtpDataNasc: TDateEdit;
+    Label3: TLabel;
+    cbbSexo: TComboBox;
+    edtTelefone: TEdit;
+    Label4: TLabel;
+    Label5: TLabel;
+    edtCelular: TEdit;
+    edtEndereco: TEdit;
+    Label6: TLabel;
+    edtNroEndereco: TEdit;
+    Label7: TLabel;
+    Label8: TLabel;
+    edtBairro: TEdit;
+    edtCEP: TEdit;
+    Label9: TLabel;
+    Label10: TLabel;
+    cbbUF: TComboBox;
+    cbbCidade: TComboBox;
+    Label11: TLabel;
+    edtEmail: TEdit;
+    Label12: TLabel;
+    edtSenha: TEdit;
+    Label13: TLabel;
+    cbbPosicao: TComboBox;
+    Label14: TLabel;
+    Label15: TLabel;
+    edtCaracteristicas: TEdit;
+    Label16: TLabel;
+    edtObs: TEdit;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnSalvarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure cbbUFExit(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure cbbUFClick(Sender: TObject);
+  private
+    { Private declarations }
+    Atleta: TAtleta;
+    procedure AtualizarComboCidades;
+    procedure AtualizarComboEstados;
+    procedure CarregarDados;
+    procedure LimparDados;
+    function  ValidarCampos: Boolean;
+  public
+    { Public declarations }
+    Editando : Boolean;
+  end;
+
+var
+  FrmCadAtleta: TFrmCadAtleta;
+
+implementation
+
+{$R *.fmx}
+
+uses UFuncoes, UPsqAtletas, UDMWebService;
+{$R *.LgXhdpiPh.fmx ANDROID}
+
+procedure TFrmCadAtleta.AtualizarComboCidades;
+begin
+  if cbbUF.ItemIndex > -1 then
+    DMWebService.CarregarCidades(cbbUF.Items[cbbUF.ItemIndex]);
+
+  //carrega cidades
+  DMWebService.fdmCidades.First;
+  cbbCidade.Items.Clear;
+  while not DMWebService.fdmCidades.Eof do
+  begin
+    cbbCidade.Items.Add(DMWebService.fdmCidadesCid_Nome.AsString);
+    DMWebService.fdmCidades.Next;
+  end;
+end;
+
+procedure TFrmCadAtleta.AtualizarComboEstados;
+begin
+  DMWebService.CarregarEstados;
+  //carrega estados
+  DMWebService.fdmEstados.First;
+  while not DMWebService.fdmEstados.Eof do
+  begin
+    cbbUF.Items.Add(DMWebService.fdmEstadosEst_Sigla.AsString);
+    DMWebService.fdmEstados.Next;
+  end;
+end;
+
+procedure TFrmCadAtleta.btnSalvarClick(Sender: TObject);
+begin
+  inherited;
+
+  if not ValidarCampos then
+    Exit;
+
+  //localiza estado
+  DMWebService.fdmEstados.Locate('Est_Sigla',  cbbUF.Items.ValueFromIndex[cbbUF.ItemIndex], []);
+
+  //localiza cidade
+  DMWebService.fdmCidades.Filter   := ' Est_Codigo = ' +  DMWebService.fdmEstadosEst_Codigo.AsString;
+  DMWebService.fdmEstados.Filtered := True;
+  DMWebService.fdmCidades.Locate('Cid_Nome', cbbCidade.Items.ValueFromIndex[cbbCidade.ItemIndex], []);
+  DMWebService.fdmCidades.Filter   := EmptyStr;
+  DMWebService.fdmEstados.Filtered := false;
+
+  with Atleta do
+  begin
+    NomeCompleto   := edtNome.Text;
+    DataNasc       := dtpDataNasc.Date;
+    Sexo           := TSexo(cbbSexo.ItemIndex);
+    Telefone       := edtTelefone.Text;
+    Celular        := edtCelular.Text;
+    Endereco       := edtEndereco.Text;
+    Bairro         := edtBairro.Text;
+    NumEndereco    := StrToIntDef(edtNroEndereco.Text, 0);
+    CEP            := edtCEP.Text;
+    Cid_IBGE       := DMWebService.fdmCidadesCid_IBGE.AsInteger;
+    Email          := edtEmail.Text;
+    Senha          := edtSenha.Text;
+    Posicao        := TPosicao(cbbPosicao.ItemIndex);
+    Status         := TStatus.tsAtivo;
+    Caracteristicas:= edtCaracteristicas.Text;
+    Observacao     := edtObs.Text;
+  end;
+
+  if DMWebService.SalvarAtletas(Atleta) then
+    Close
+  else
+    MsgAviso('Falha ao salvar registro. Tente novamente mais tarde.');
+end;
+
+procedure TFrmCadAtleta.CarregarDados;
+begin
+  DMWebService.CarregarAtletas(Usuario.Codigo);
+
+
+  Atleta.Codigo          := Usuario.Codigo;
+  edtNome.Text           := DMWebService.fdmAtletasAtl_NomeCompleto.AsString;
+  dtpDataNasc.Date       := DMWebService.fdmAtletasAtl_DataNasc.AsDateTime;
+  cbbSexo.ItemIndex      := iif(DMWebService.fdmAtletasAtl_Sexo.AsString = 'M', 0, 1);
+  edtTelefone.Text       := DMWebService.fdmAtletasAtl_Telefone.AsString;
+  edtCelular.Text        := DMWebService.fdmAtletasAtl_Celular.AsString;
+  edtEndereco.Text       := DMWebService.fdmAtletasAtl_Endereco.AsString;
+  edtNroEndereco.Text    := DMWebService.fdmAtletasAtl_NumEndereco.AsString;
+  edtBairro.Text         := DMWebService.fdmAtletasAtl_Bairro.AsString;
+  edtCEP.Text            := DMWebService.fdmAtletasAtl_CEP.AsString;
+  AtualizarComboEstados;
+  AtualizarComboCidades;
+  cbbUF.Items.IndexOf('PR');
+  cbbCidade.Items.IndexOf('CASCAVEL');
+  edtEmail.Text          := DMWebService.fdmAtletasAtl_Email.AsString;
+  edtSenha.Text          := DMWebService.fdmAtletasAtl_Senha.AsString;
+  cbbPosicao.ItemIndex   := DMWebService.fdmAtletasAtl_Posicao.AsInteger;
+  edtCaracteristicas.Text:= DMWebService.fdmAtletasAtl_Caracteristica.AsString;
+  edtObs.Text            := DMWebService.fdmAtletasAtl_Obs.AsString;
+end;
+
+procedure TFrmCadAtleta.cbbUFClick(Sender: TObject);
+begin
+  inherited;
+  AtualizarComboCidades;
+end;
+
+procedure TFrmCadAtleta.cbbUFExit(Sender: TObject);
+begin
+  inherited;
+  AtualizarComboCidades;
+end;
+
+procedure TFrmCadAtleta.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  inherited;
+  FrmCadAtleta := nil;
+end;
+
+procedure TFrmCadAtleta.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LimparDados;
+end;
+
+procedure TFrmCadAtleta.FormShow(Sender: TObject);
+begin
+  inherited;
+  if Editando then
+    CarregarDados;
+end;
+
+procedure TFrmCadAtleta.LimparDados;
+begin
+  Editando      := False;
+  if Atleta = nil then
+    Atleta := tAtleta.Create;
+
+  AtualizarComboEstados;
+  DMWebService.CarregarCidades('PR');
+
+  with Atleta do
+  begin
+    Codigo         := 0;
+    NomeCompleto   := EmptyStr;
+    DataNasc       := Date;
+    Sexo           := TSexo.tsMasculino;
+    Telefone       := EmptyStr;
+    Celular        := EmptyStr;
+    Endereco       := EmptyStr;
+    Bairro         := EmptyStr;
+    NumEndereco    := 0;
+    CEP            := EmptyStr;
+    Cid_IBGE       := 0;
+    Email          := EmptyStr;
+    Senha          := EmptyStr;
+    Posicao        := TPosicao.tpGoleiro;
+    Status         := TStatus.tsAtivo;
+    Caracteristicas:= EmptyStr;
+    Observacao     := EmptyStr;
+  end;
+
+  edtNome.Text                := EmptyStr;
+  dtpDataNasc.IsEmpty         := True;
+  cbbSexo.ItemIndex           := -1;
+  edtTelefone.Text            := EmptyStr;
+  edtCelular.TexT             := EmptyStr;
+  edtEndereco.Text            := EmptyStr;
+  edtNroEndereco.Text         := EmptyStr;
+  edtBairro.Text              := EmptyStr;
+  edtCEP.Text                 := EmptyStr;
+  cbbUF.ItemIndex             := -1;
+  cbbCidade.ItemIndex         := -1;
+  edtEmail.Text               := EmptyStr;
+  edtSenha.Text               := EmptyStr;
+  edtCaracteristicas.Text     := EmptyStr;
+  edtObs.Text                 := EmptyStr;
+  cbbPosicao.ItemIndex        := -1;
+end;
+
+function TFrmCadAtleta.ValidarCampos: Boolean;
+begin
+  Result := False;
+
+  //valida nome
+  if edtNome.Text.IsEmpty then
+  begin
+    MsgAviso('Informe o seu nome completo');
+    edtNome.SetFocus;
+    Exit;
+  end;
+
+  //valida data de nascimento
+  if dtpDataNasc.IsEmpty then
+  begin
+    MsgAviso('Informe a sua data de nascimento.');
+    dtpDataNasc.SetFocus;
+    Exit;
+  end;
+
+  //valida sexo
+  if cbbSexo.ItemIndex = -1 then
+  begin
+    MsgAviso('Selecione um sexo.');
+    cbbSexo.SetFocus;
+    Exit;
+  end;
+
+  //valida UF
+  if cbbUF.ItemIndex = -1 then
+  begin
+    MsgAviso('Selecione seu estado de residência.');
+    cbbUF.SetFocus;
+    Exit;
+  end;
+
+  //valida cidade
+  if cbbCidade.ItemIndex = -1 then
+  begin
+    MsgAviso('Selecione sua cidade de residência.');
+    cbbCidade.SetFocus;
+    Exit;
+  end;
+
+  //valida email
+  if edtEmail.Text.IsEmpty then
+  begin
+    MsgAviso('Informe seu e-mail.');
+    edtEmail.SetFocus;
+    Exit;
+  end;
+
+  //valida senha
+  if edtSenha.Text.IsEmpty then
+  begin
+    MsgAviso('Informe a senha do usuário.');
+    edtSenha.SetFocus;
+    Exit;
+  end;
+
+  //valida posição
+  if cbbPosicao.ItemIndex = -1 then
+  begin
+    MsgAviso('Selecione sua posição preferida.');
+    cbbPosicao.SetFocus;
+    Exit;
+  end;
+
+  Result := True;
+end;
+
+end.

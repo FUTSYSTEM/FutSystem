@@ -1,0 +1,164 @@
+unit UCadTime;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
+  FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
+  UPadrao, FMX.Controls.Presentation, FMX.Layouts, FMX.Edit, IWSFutSystem1;
+
+type
+  TFrmCadTime = class(TFrmPadrao)
+    Label1: TLabel;
+    edtNomeTime: TEdit;
+    btnSalvar: TButton;
+    Label2: TLabel;
+    lblLider: TLabel;
+    btnAtletas: TButton;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCreate(Sender: TObject);
+    procedure btnSalvarClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure btnAtletasClick(Sender: TObject);
+  private
+    { Private declarations }
+    Equipe: TTimes;
+    procedure LimparDados;
+    function  ValidarCampos: Boolean;
+    procedure CarregarDados;
+    procedure DesabilitarCampos;
+  public
+    { Public declarations }
+    CodTime: Integer;
+    Editando, ApenasVisualizar : Boolean;
+    ListaAtletas: TListTimesAtletas;
+  end;
+
+var
+  FrmCadTime: TFrmCadTime;
+
+implementation
+
+{$R *.fmx}
+
+uses UDMWebService, UFuncoes, UPsqTimes, UPsqAtletasTimes;
+
+procedure TFrmCadTime.btnAtletasClick(Sender: TObject);
+begin
+  inherited;
+  if not Assigned(FrmPsqAtletasTimes) then
+    FrmPsqAtletasTimes := TFrmPsqAtletasTimes.Create(Self);
+  FrmPsqAtletasTimes.Show;
+end;
+
+procedure TFrmCadTime.btnCancelarClick(Sender: TObject);
+begin
+  inherited;
+  Close;
+end;
+
+procedure TFrmCadTime.btnSalvarClick(Sender: TObject);
+var
+  ret: Integer;
+begin
+  inherited;
+  Equipe.Nome   := edtNomeTime.Text;
+  ret           := DMWebService.SalvarTime(Equipe);
+  if ret > 0  then
+  begin
+    Equipe.Codigo := ret;
+
+    DMWebService.DeletarTimesAtletas(Equipe.Codigo);
+    DMWebService.SalvarTimeAtletas(ListaAtletas);
+
+    FrmPsqTimes.sbAtualizarClick(Self);
+    Close;
+  end
+  else
+    MsgAviso('Falha ao salvar registro. Tente novamente mais tarde.');
+end;
+
+procedure TFrmCadTime.CarregarDados;
+begin
+  if CodTime > 0 then
+  begin
+    DMWebService.CarregarTimes(CodTime);
+  end;
+
+  Equipe.Codigo       := DMWebService.fdmTimesTim_Codigo.AsInteger;
+  Equipe.DataFundacao := DMWebService.fdmTimesTim_DataFundacao.AsDateTime;
+  Equipe.Atl_Codigo   := DMWebService.fdmTimesAtl_Codigo.AsInteger;
+  Equipe.Nome         := DMWebService.fdmTimesTim_Nome.AsString;
+  edtNomeTime.Text    := Equipe.Nome;
+
+  DMWebService.CarregarAtletas(Equipe.Atl_Codigo);
+  lblLider.Text       := DMWebService.fdmAtletasAtl_NomeCompleto.AsString;
+
+  //se o usuário logado for o presidente do time, permite a alteração dos dados
+  if (Usuario.TipoLogin = TTipoLogin.tlAtleta) and (Usuario.Codigo = Equipe.Atl_Codigo) then
+    ApenasVisualizar := False;
+end;
+
+procedure TFrmCadTime.DesabilitarCampos;
+begin
+  edtNomeTime.Enabled:= False;
+  btnAtletas.Visible := False;
+  btnSalvar.Visible  := False;
+end;
+
+procedure TFrmCadTime.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  inherited;
+  FrmCadTime := nil;
+end;
+
+procedure TFrmCadTime.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LimparDados;
+end;
+
+procedure TFrmCadTime.FormShow(Sender: TObject);
+begin
+  inherited;
+  edtNomeTime.SetFocus;
+  if Editando then
+    CarregarDados;
+  if ApenasVisualizar then
+    DesabilitarCampos;
+end;
+
+//procedimento para limpar dados e campos a serem utilizados na gravação
+procedure TFrmCadTime.LimparDados;
+begin
+  CodTime          := 0;
+  Editando         := False;
+  ApenasVisualizar := False;
+  if Equipe = nil then
+    Equipe := TTimes.Create;
+  Equipe.Codigo       := 0;
+  Equipe.Nome         := EmptyStr;
+  Equipe.DataFundacao := Date;
+  Equipe.Atl_Codigo   := Usuario.Codigo;
+  lblLider.Text       := Usuario.NomeAcesso;
+  edtNomeTime.Text    := '';
+  ListaAtletas        := TListTimesAtletas.Create();
+end;
+
+function TFrmCadTime.ValidarCampos: Boolean;
+begin
+  Result := False;
+
+  //valida nome
+  if edtNomeTime.Text.IsEmpty then
+  begin
+    MsgAviso('Informe o nome do seu time');
+    edtNomeTime.SetFocus;
+    Exit;
+  end;
+
+  Result := True;
+end;
+
+end.

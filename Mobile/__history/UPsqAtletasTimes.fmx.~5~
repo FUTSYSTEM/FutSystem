@@ -1,0 +1,20 @@
+inherited FrmPsqAtletasTimes: TFrmPsqAtletasTimes
+  OnClose = FormClose
+  DesignerMasterStyle = 3
+  inherited lytMain: TLayout
+    inherited tlbTitulo: TToolBar
+      inherited lblTitulo: TLabel
+        Text = 'Atletas do Time'
+        inherited sbAdicionar: TSpeedButton
+          OnClick = sbAdicionarClick
+        end
+        inherited sbAtualizar: TSpeedButton
+          OnClick = sbAtualizarClick
+        end
+      end
+    end
+    inherited lvPesquisa: TListView
+      OnItemClick = lvPesquisaItemClick
+    end
+  end
+end

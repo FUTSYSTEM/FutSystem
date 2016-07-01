@@ -17397,6 +17397,7 @@ object FrmLogin: TFrmLogin
       TextSettings.Font.Style = [fsBold, fsUnderline]
       TextSettings.HorzAlign = Center
       Text = 'Esqueci minha senha'
+      Visible = False
     end
   end
   object Layout3: TLayout

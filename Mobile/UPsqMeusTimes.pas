@@ -13,6 +13,8 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure sbAtualizarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure lvPesquisaItemClick(const Sender: TObject;
+      const AItem: TListViewItem);
   private
     { Private declarations }
   public
@@ -26,7 +28,7 @@ implementation
 
 {$R *.fmx}
 
-uses UDMWebService, UFuncoes;
+uses UDMWebService, UFuncoes, UCadTime;
 
 procedure TFrmPsqMeusTimes.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
@@ -38,6 +40,19 @@ procedure TFrmPsqMeusTimes.FormCreate(Sender: TObject);
 begin
   inherited;
   sbAtualizarClick(Self);
+end;
+
+procedure TFrmPsqMeusTimes.lvPesquisaItemClick(const Sender: TObject;
+  const AItem: TListViewItem);
+begin
+  inherited;
+  //edição
+  if not Assigned(FrmCadTime) then
+    FrmCadTime := TFrmCadTime.Create(Self);
+  FrmCadTime.Editando         := True;
+  FrmCadTime.ApenasVisualizar := True;
+  FrmCadTime.CodTime          := StrToInt(AItem.Detail);
+  FrmCadTime.Show;
 end;
 
 procedure TFrmPsqMeusTimes.sbAtualizarClick(Sender: TObject);
@@ -56,7 +71,7 @@ begin
       begin
         DMWebService.CarregarTimes(DMWebService.fdmTimesAtletasTim_Codigo.AsInteger);
         Text  := DMWebService.fdmTimesTim_Nome.AsString;
-        Detail:= DMWebService.fdmTimesTim_DataFundacao.AsString;
+        Detail:= DMWebService.fdmTimesTim_Codigo.AsString;
       end;
       DMWebService.fdmTimesAtletas.Next;
     end;
